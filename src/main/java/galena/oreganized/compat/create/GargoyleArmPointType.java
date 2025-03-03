@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 public class GargoyleArmPointType extends ArmInteractionPointType {
 
     public GargoyleArmPointType() {
-        super(Oreganized.modLoc("gargoyle"));
+        super();
     }
 
     @Override

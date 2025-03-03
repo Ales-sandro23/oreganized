@@ -145,6 +145,7 @@ public class Oreganized {
                 OPaintingVariants.PAINTING_VARIANTS,
                 OAttributes.ATTRIBUTES,
                 LOOT_MODIFIERS,
+                CreateCompat.ARM_INTERACTION_POINT_TYPES
         };
 
         for (DeferredRegister<?> register : registers) {

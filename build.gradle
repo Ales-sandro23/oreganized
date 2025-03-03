@@ -94,7 +94,7 @@ repositories {
         }
     }
     maven {
-        // location of catnip, library used by create
+        // location of ponder, library used by create
         name = "Create Mod Maven"
         url = "https://maven.createmod.net"
     }

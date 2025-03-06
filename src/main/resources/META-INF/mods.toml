@@ -62,3 +62,10 @@ This mod is designed to be a Vanilla plus mod while also adding unique uses and 
     versionRange="*"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.oreganized]]
+    modId="create"
+    mandatory=false
+    versionRange=">=6.0.0"
+    ordering="AFTER"
+    side="BOTH"

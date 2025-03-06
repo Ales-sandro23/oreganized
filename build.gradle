@@ -123,6 +123,7 @@ dependencies {
     runtimeOnly(fg.deobf("maven.modrinth:architectury-api:${architectury_version}"))
     runtimeOnly(fg.deobf("maven.modrinth:moonlight:${moonlight_lib_version}"))
     runtimeOnly(fg.deobf("maven.modrinth:dye-depot:${dye_depot_version}"))
+    runtimeOnly(fg.deobf("maven.modrinth:jade:${jade_version}"))
 
     /// Utilities for the development environment
     //runtimeOnly fg.deobf("curse.maven:jade-324717:${jade_version}")

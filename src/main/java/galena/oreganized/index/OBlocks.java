@@ -128,9 +128,9 @@ public class OBlocks {
 
 
     // Fluids and Cauldrons
-    public static final RegistryObject<LiquidBlock> MOLTEN_LEAD = HELPER.createBlock("molten_lead", () ->
+    public static final RegistryObject<LiquidBlock> MOLTEN_LEAD = HELPER.createBlockNoItem("molten_lead", () ->
             new MoltenLeadBlock(OFluids.MOLTEN_LEAD, BlockBehaviour.Properties.copy(Blocks.LAVA).mapColor(MapColor.COLOR_PURPLE)));
-    public static final RegistryObject<Block> MOLTEN_LEAD_CAULDRON = HELPER.createBlock("molten_lead_cauldron", () -> new MoltenLeadCauldronBlock(BlockBehaviour.Properties.copy(Blocks.LAVA_CAULDRON).randomTicks()));
+    public static final RegistryObject<Block> MOLTEN_LEAD_CAULDRON = HELPER.createBlockNoItem("molten_lead_cauldron", () -> new MoltenLeadCauldronBlock(BlockBehaviour.Properties.copy(Blocks.LAVA_CAULDRON).randomTicks()));
 
     public static <T extends Block> Map<DyeColor, RegistryObject<T>> registerColored(UnaryOperator<String> nameCreator, Function<DyeColor, ? extends T> factory) {
         return Arrays.stream(DyeColor.values()).collect(Collectors.toMap(

@@ -7,6 +7,7 @@ import galena.oreganized.index.OEffects;
 import galena.oreganized.index.OEntityTypes;
 import galena.oreganized.index.OFluids;
 import galena.oreganized.index.OItems;
+import galena.oreganized.index.OPaintingVariants;
 import galena.oreganized.index.OPotions;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
@@ -68,6 +69,8 @@ public class OLang extends OLangProvider {
         add("attribute.oreganized.kinetic_damage", "Kinetic Damage");
 
         add("item.oreganized.flint_and_pewter", "Flint and Pewter");
+        
+        addPainting(OPaintingVariants.VINDICATING_BAD, "Vidicating Bad", "Xaidee");
 
         /*
             Automatically create translations for blocks and items based on their registry name.
@@ -88,4 +91,5 @@ public class OLang extends OLangProvider {
             tryEntity(entities);
         }
     }
+
 }

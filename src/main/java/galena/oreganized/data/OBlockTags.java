@@ -203,6 +203,13 @@ public class OBlockTags extends IntrinsicHolderTagsProvider<Block> {
             ;
         });
 
+        scribeMineable
+                .addOptional(new ResourceLocation("ae2", "quartz_cluster"))
+                .addOptional(new ResourceLocation("ae2", "flawless_budding_quartz"))
+                .addOptional(new ResourceLocation("ae2", "flawed_budding_quartz"))
+                .addOptional(new ResourceLocation("ae2", "damaged_budding_quartz"))
+                .addOptional(new ResourceLocation("ae2", "chipped_budding_quartz"));
+
         tag(SILKTOUCH_WITH_SCRIBE_BLACKLIST)
                 .add(OBlocks.GROOVED_ICE.get())
                 .add(OBlocks.GROOVED_PACKED_ICE.get())

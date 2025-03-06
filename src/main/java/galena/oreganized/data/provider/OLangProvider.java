@@ -8,6 +8,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.decoration.PaintingVariant;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.RecordItem;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -198,4 +200,11 @@ public abstract class OLangProvider implements DataProvider {
         }
         return res.toString().trim();
     }
+
+    public void addPainting(RegistryObject<PaintingVariant> variant, String title, String author) {
+        var key = variant.getKey().location();
+        add("painting.%s.%s.title".formatted(key.getNamespace(), key.getPath()), title);
+        add("painting.%s.%s.author".formatted(key.getNamespace(), key.getPath()), author);
+    }
+
 }

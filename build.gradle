@@ -93,6 +93,11 @@ repositories {
             includeGroup("maven.modrinth")
         }
     }
+    maven {
+        // location of ponder, library used by create
+        name = "Create Mod Maven"
+        url = "https://maven.createmod.net"
+    }
 }
 
 dependencies {
@@ -106,11 +111,11 @@ dependencies {
     }
 
     // Compatibilities
-    runtimeOnly(fg.deobf("maven.modrinth:create:${create_version}"))
+    runtimeOnly(fg.deobf("com.simibubi.create:create-1.20.1:${create_version}"))
     implementation(fg.deobf("maven.modrinth:farmers-delight:${farmersdelight_version}"))
     implementation(fg.deobf("maven.modrinth:nethers-delight:${nethersdelight_version}"))
     implementation(fg.deobf("maven.modrinth:shield-expansion:${shieldexpansion_version}"))
-    implementation(fg.deobf("maven.modrinth:create:${create_version}"))
+    implementation(fg.deobf("com.simibubi.create:create-1.20.1:${create_version}"))
     implementation(fg.deobf("maven.modrinth:supplementaries:${supplementaries_version}"))
 
     // For dev testing
@@ -126,6 +131,9 @@ dependencies {
     compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+
+    // library used by create
+    compileOnly(fg.deobf("net.createmod.ponder:Ponder-Forge-1.20.1:${ponder_version}"))
 
     runtimeOnly(fg.deobf("maven.modrinth:scannable:${scannable_version}"))
     runtimeOnly(fg.deobf("maven.modrinth:architectury-api:${architectury_version}"))

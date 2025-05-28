@@ -1,0 +1,38 @@
+package galena.oreganized.content.item;
+
+import galena.oreganized.client.accessors.GuiThermometerAccessor;
+import galena.oreganized.index.OCriteriaTriggers;
+import galena.oreganized.index.OItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+public class SpeedometerItem extends Item {
+    public SpeedometerItem(Properties pProperties) {
+        super(pProperties);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
+        if(pPlayer.getCooldowns().isOnCooldown(OItems.SPEEDOMETER.get())){
+            return super.use(pLevel, pPlayer, pUsedHand);
+        }
+        if(!pLevel.isClientSide() && pPlayer instanceof ServerPlayer player && player.getDeltaMovement().y<(-3.5)){
+            OCriteriaTriggers.TERMINAL_VELOCITY.trigger(player);
+        }
+        pPlayer.getCooldowns().addCooldown(OItems.SPEEDOMETER.get(), 40);
+        if(pLevel.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND){
+            if(Minecraft.getInstance().gui instanceof GuiThermometerAccessor accessor){
+                accessor.oreganized2$setToolHighlightTimer(60);
+            }
+        }
+        return super.use(pLevel, pPlayer, pUsedHand);
+    }
+
+
+}

@@ -3,34 +3,13 @@ package galena.oreganized.index;
 import com.google.common.collect.ImmutableBiMap;
 import com.teamabnormals.blueprint.core.util.registry.BlockSubRegistryHelper;
 import galena.oreganized.Oreganized;
-import galena.oreganized.content.block.BulbBlock;
-import galena.oreganized.content.block.CrystalGlassBlock;
-import galena.oreganized.content.block.CrystalGlassPaneBlock;
-import galena.oreganized.content.block.GargoyleBlock;
-import galena.oreganized.content.block.IMeltableBlock;
-import galena.oreganized.content.block.LeadBarsBlock;
-import galena.oreganized.content.block.LeadDoorBlock;
-import galena.oreganized.content.block.LeadTrapdoorBlock;
-import galena.oreganized.content.block.MeltableBlock;
-import galena.oreganized.content.block.MeltablePillarBlock;
-import galena.oreganized.content.block.MoltenLeadBlock;
-import galena.oreganized.content.block.MoltenLeadCauldronBlock;
-import galena.oreganized.content.block.ShrapnelBombBlock;
-import galena.oreganized.content.block.SpottedGlanceBlock;
+import galena.oreganized.content.block.*;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DoubleHighBlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.IceBlock;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
@@ -83,6 +62,8 @@ public class OBlocks {
             .strength(5.0F, 6.0F).sound(SoundType.METAL)));
 
     public static final RegistryObject<Block> GARGOYLE = register("gargoyle", () -> new GargoyleBlock(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+    public static final RegistryObject<Block> WHITE_DATURA = register("datura", () -> new FlowerBlock(OEffects.STUNNING,21,BlockBehaviour.Properties.copy(Blocks.OXEYE_DAISY)));
+    public static final RegistryObject<Block> PURPLE_DATURA = register("purple_datura", () -> new FlowerBlock(OEffects.STUNNING,21,BlockBehaviour.Properties.copy(Blocks.OXEYE_DAISY)));
 
     private static BlockBehaviour.Properties leadProperties() {
         return BlockBehaviour.Properties.of()

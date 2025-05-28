@@ -2,7 +2,9 @@
   "type": "forge:add_features",
   "biomes": "#minecraft:is_savanna",
   "features": [
-    "oreganized:lead_ore_extra"
+    "oreganized:lead_ore_extra",
+    "oreganized:datura",
+    "oreganized:purple_datura"
   ],
   "step": "underground_ores"
 }

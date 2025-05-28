@@ -28,7 +28,10 @@ public class OLang extends OLangProvider {
         addDisc(OItems.MUSIC_DISC_STRUCTURE, "Firch", "structure");
 
         addItem(OItems.SHRAPNEL_BOMB_MINECART, "Minecart with Shrapnel Bomb");
-
+        addItem(OItems.THERMOMETER, "Thermometer");
+        addItem(OItems.SPEEDOMETER, "Speedometer");
+        addBlock(OBlocks.PURPLE_DATURA, "Purple Datura");
+        addBlock(OBlocks.WHITE_DATURA, "White Datura");
         addBlock(OBlocks.RAW_SILVER_BLOCK, "Block of Raw Silver");
         addBlock(OBlocks.RAW_LEAD_BLOCK, "Block of Raw Lead");
         addBlock(OBlocks.SILVER_BLOCK, "Block of Silver");
@@ -42,7 +45,7 @@ public class OLang extends OLangProvider {
 
         addEffect(OEffects.STUNNING, "Brain Damage");
         addPotion(OPotions.STUNNING, "Brain Damage");
-
+        add("tooltip.oreganized.lead", "Lead material");
         add("trim_material.oreganized.lead", "Lead material");
         add("trim_material.oreganized.silver", "Silver material");
         add("trim_material.oreganized.electrum", "Electrum material");
@@ -56,7 +59,16 @@ public class OLang extends OLangProvider {
         addSubtitle("entity", "shrapnel_bomb.primed", "Shrapnel Bomb fizzes");
         addSubtitle("entity", "bolt_hit", "Bolt hits");
         addSubtitle("block", "gargoyle.growl", "Gargoyle growls");
-
+        add("tooltip.oreganized.speed", "Speed: ");
+        add("tooltip.oreganized.heat1", "Cold");
+        add("tooltip.oreganized.heat2", "Normal");
+        add("tooltip.oreganized.heat3", "Fine");
+        add("tooltip.oreganized.heat4", "Warm");
+        add("tooltip.oreganized.heat5", "Hot");
+        add("tooltip.oreganized.heat6", "Hotter");
+        add("tooltip.oreganized.heat8", "Searing");
+        add("tooltip.oreganized.heat7", "Scalding");
+        add("tooltip.oreganized.heat9", "Scorching");
         add("tooltip.oreganized.wip.title", "Work In Progress");
         add("tooltip.oreganized.wip.description", "Usages for this item will be available in a future release");
 

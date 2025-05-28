@@ -20,7 +20,9 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Items;
@@ -60,6 +62,25 @@ public class OreganizedClient {
                 return stack.getOrCreateTag().getInt("Level");
             }
         });
+        ItemProperties.register(OItems.SPEEDOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
+            if (entity == null) {
+                return 0;
+            } else {
+
+
+                entity.getRootVehicle();
+                Entity entity2 = Minecraft.getInstance().player.getRootVehicle();
+                int timed = (int) Math.round(entity2.getDeltaMovement().length()*15);
+                return Mth.clamp(Math.round(entity.getDeltaMovement().length()*15),0,16);
+            }
+        });
+        ItemProperties.register(OItems.THERMOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
+            if (entity == null) {
+                return 0;
+            } else {
+                return stack.getOrCreateTag().getInt("OreganizedHeat");
+            }
+        });
 
         ItemProperties.register(Items.CROSSBOW, new ResourceLocation(Oreganized.MOD_ID, "lead_bolt"), (stack, level, user, i) ->
                 CrossbowItem.isCharged(stack) && CrossbowItem.containsChargedProjectile(stack, OItems.LEAD_BOLT.get()) ? 1.0F : 0.0F
@@ -78,7 +99,8 @@ public class OreganizedClient {
         render(OBlocks.LEAD_TRAPDOOR, cutout);
         render(OBlocks.LEAD_BARS, cutout);
         render(OBlocks.GARGOYLE, cutout);
-
+        render(OBlocks.WHITE_DATURA, cutout);
+        render(OBlocks.PURPLE_DATURA, cutout);
         OBlocks.CRYSTAL_GLASS.forEach((c, b) -> render(b, translucent));
         OBlocks.CRYSTAL_GLASS_PANES.forEach((c, b) -> render(b, translucent));
 

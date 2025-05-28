@@ -4,14 +4,7 @@ import com.teamabnormals.blueprint.common.item.BlueprintRecordItem;
 import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import galena.oreganized.Oreganized;
 import galena.oreganized.compat.farmers_delight.FarmersDelightCompat;
-import galena.oreganized.content.item.BushHammerItem;
-import galena.oreganized.content.item.ElectrumArmorItem;
-import galena.oreganized.content.item.FlintAndPewterItem;
-import galena.oreganized.content.item.LeadBoltItem;
-import galena.oreganized.content.item.MinecartShrapnelBombItem;
-import galena.oreganized.content.item.OSmithingTemplateItem;
-import galena.oreganized.content.item.ScribeItem;
-import galena.oreganized.content.item.SilverMirrorItem;
+import galena.oreganized.content.item.*;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
@@ -74,7 +67,10 @@ public class OItems {
     public static final RegistryObject<Item> ELECTRUM_SHIELD = HELPER.createItem("electrum_shield", () -> new ShieldItem(new Item.Properties().durability(363)));
     public static final RegistryObject<Item> ELECTRUM_MACHETE = HELPER.createItem("electrum_machete", () -> new SwordItem(OItemTiers.ELECTRUM, 2, -2.4F, new Item.Properties()));
 
+
     // Misc Tools
+    public static final RegistryObject<Item> THERMOMETER = HELPER.createItem("thermometer", () -> new ThermometerItem(new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> SPEEDOMETER = HELPER.createItem("speedometer", () -> new SpeedometerItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SILVER_MIRROR = HELPER.createItem("silver_mirror", () -> new SilverMirrorItem(new Item.Properties().stacksTo(1)));
     //public static final RegistryObject<Item> BROKEN_SILVER_MIRROR = HELPER.createItem("broken_silver_mirror", () -> new OItem(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> MOLTEN_LEAD_BUCKET = HELPER.createItem("molten_lead_bucket", () -> new BucketItem(OFluids.MOLTEN_LEAD, new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));

@@ -82,7 +82,8 @@ public class OBlockTags extends IntrinsicHolderTagsProvider<Block> {
         tag(BlockTags.CAULDRONS).add(OBlocks.MOLTEN_LEAD_CAULDRON.get());
         tag(BlockTags.DOORS).add(OBlocks.LEAD_DOOR.get());
         tag(BlockTags.TRAPDOORS).add(OBlocks.LEAD_TRAPDOOR.get());
-
+        tag(BlockTags.SMALL_FLOWERS).add(OBlocks.WHITE_DATURA.get());
+        tag(BlockTags.SMALL_FLOWERS).add(OBlocks.PURPLE_DATURA.get());
         // Forge
         tag(Tags.Blocks.ORES).addTags(ORES_SILVER, ORES_LEAD);
         tag(Tags.Blocks.ORE_RATES_SINGULAR).addTags(ORES_SILVER, ORES_LEAD);

@@ -107,8 +107,6 @@ public class HeavyDoorBlockEntity extends BlockEntity {
             setAnimationState(level, pos, state, true);
         }
 
-        if (!level.isClientSide) System.out.println(pressure);
-
         if (pressure < REQUIRED_PRESSURE_OPEN) {
             pressure += 6;
         }

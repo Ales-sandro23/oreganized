@@ -8,6 +8,7 @@ import galena.oreganized.client.render.gui.OGui;
 import galena.oreganized.client.tooltips.ClientThermometerTooltip;
 import galena.oreganized.index.OEffects;
 import galena.oreganized.index.OItems;
+import java.awt.*;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -27,8 +28,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.awt.*;
 
 @Mixin(Gui.class)
 public abstract class GuiMixin implements GuiThermometerAccessor {

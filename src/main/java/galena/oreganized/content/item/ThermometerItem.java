@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMap;
 import galena.oreganized.client.accessors.GuiThermometerAccessor;
 import galena.oreganized.client.tooltips.ThermometerTooltip;
 import galena.oreganized.index.OItems;
+import java.util.Map;
+import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -21,9 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
-import java.util.Optional;
 
 public class ThermometerItem extends Item {
     protected static final Map<Block,Integer> HEATVALUE = (new ImmutableMap.Builder<Block, Integer>().put(Blocks.LAVA, 8).put(Blocks.LAVA_CAULDRON, 8).put(Blocks.FIRE,4).put(Blocks.MAGMA_BLOCK, 3).put(Blocks.TORCH, 2).put(Blocks.LANTERN, 2).put(Blocks.CAMPFIRE,3).put(Blocks.SOUL_CAMPFIRE,3).put(Blocks.SOUL_FIRE,3).put(Blocks.SOUL_LANTERN,2)).build();

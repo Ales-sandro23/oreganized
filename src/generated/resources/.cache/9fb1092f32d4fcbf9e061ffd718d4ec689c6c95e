@@ -1,4 +1,4 @@
-// 1.20.1	2025-03-06T21:12:21.1803684	Recipes
+// 1.20.1	2025-05-30T14:45:56.2962934	Recipes
 c27d3499944bf522a573dc8987582db2d7349b41 data/oreganized/advancements/recipes/brewing/poisonous_potato_from_lead.json
 b87bda19df1402dd6804d2655b2c4ce335f757f7 data/oreganized/advancements/recipes/building_blocks/amber_crystal_glass_pane.json
 6a733a4d41ba5932faa9ab25e3afde7801d52048 data/oreganized/advancements/recipes/building_blocks/aqua_crystal_glass_pane.json
@@ -194,6 +194,8 @@ d8d4342744c72378bf0e7430305569819e8eeef1 data/oreganized/advancements/recipes/re
 54315d01f4b0a57f8c13766c770aa7b305a0c4bc data/oreganized/advancements/recipes/tools/flint_and_pewter.json
 4a68b65b81f872d9396798417f3ff5be886ce70c data/oreganized/advancements/recipes/tools/scribe.json
 57cf50f8e6ff4069b2fdc5fcf0e5092b68377468 data/oreganized/advancements/recipes/tools/silver_mirror.json
+f64b94e28235ff846ae27c23c922acba3836da12 data/oreganized/advancements/recipes/tools/speedometer.json
+ec8ce300a2f01b4cdc1d2b98f53bc952ef17c148 data/oreganized/advancements/recipes/tools/thermometer.json
 bd88fa660d3a40c321d3288b127cfe99e795cb6f data/oreganized/advancements/recipes/transportation/shrapnel_bomb_minecart.json
 ec12107177d78e10b3604372280aa1438ecdac44 data/oreganized/recipes/amber_crystal_glass.json
 18069f0358783fece9b744a7ace1fa12c41b55bb data/oreganized/recipes/amber_crystal_glass_pane.json
@@ -324,6 +326,7 @@ ad03ddedfe0f04a76e00ed5198e66c62b62ce09b data/oreganized/recipes/slate_crystal_g
 0bef18d650c987afa638720c517c479353649026 data/oreganized/recipes/smelt_raw_lead.json
 d6fc88f30af0ebff0f813a9529ba1ca25b3ebf77 data/oreganized/recipes/smelt_raw_silver.json
 e1d8bfafa7904e89fce7ae3242b7eebc46e9f3ed data/oreganized/recipes/smelt_silver_ore.json
+8a42297d2fba914be98e034955b8f4b261169191 data/oreganized/recipes/speedometer.json
 05d3527a52be4f021824699c760733665d480d6b data/oreganized/recipes/spotted_glance.json
 95a4c40547ba898ef6ff3a952994d0d9a10f1858 data/oreganized/recipes/stonecutting/chiseled_glance.json
 2b1be77c6ac39442d637397ad5969b34350dbc59 data/oreganized/recipes/stonecutting/cut_lead.json
@@ -352,6 +355,7 @@ aa02ce6c48414bd3a45fe078d3b3edf5f43e9c0d data/oreganized/recipes/stonecutting/po
 339cee3b9edba6cc86ac53b579d9b6c984fb66d1 data/oreganized/recipes/tan_crystal_glass_pane.json
 7751ed719662ca1bd1f4c8333b2e8e5d4c2591df data/oreganized/recipes/teal_crystal_glass.json
 0aa5150d20be326d703387261e072f384d2840f3 data/oreganized/recipes/teal_crystal_glass_pane.json
+7c5084fadd2cb15c84d7b861095e6da9e2edc234 data/oreganized/recipes/thermometer.json
 578932da8faeb13b8508c1bbae0cb7229c5779e4 data/oreganized/recipes/verdant_crystal_glass.json
 98302ee489338a4dff1bb3fa0387acc00043a266 data/oreganized/recipes/verdant_crystal_glass_pane.json
 ce61cedaf16bb31e7ee1e7fd11c61cf11c9354cf data/oreganized/recipes/waxed_amber_concrete_powder.json

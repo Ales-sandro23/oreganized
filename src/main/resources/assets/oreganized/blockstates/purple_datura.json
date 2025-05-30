@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "oreganized:block/purple_datura" }
+    "": {
+      "model": "oreganized:block/purple_datura"
+    }
   }
 }

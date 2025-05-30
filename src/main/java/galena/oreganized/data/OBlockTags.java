@@ -1,5 +1,28 @@
 package galena.oreganized.data;
 
+import galena.oreganized.Oreganized;
+import galena.oreganized.index.OBlocks;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
+
 import static galena.oreganized.index.OTags.Blocks.BLOWS_LEAD_CLOUD;
 import static galena.oreganized.index.OTags.Blocks.CREATES_LEAD_CLOUD;
 import static galena.oreganized.index.OTags.Blocks.CRYSTAL_GLASS;
@@ -18,28 +41,6 @@ import static galena.oreganized.index.OTags.Blocks.STORAGE_BLOCKS_LEAD;
 import static galena.oreganized.index.OTags.Blocks.STORAGE_BLOCKS_RAW_LEAD;
 import static galena.oreganized.index.OTags.Blocks.STORAGE_BLOCKS_RAW_SILVER;
 import static galena.oreganized.index.OTags.Blocks.STORAGE_BLOCKS_SILVER;
-
-import galena.oreganized.Oreganized;
-import galena.oreganized.index.OBlocks;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-import javax.annotation.Nullable;
-import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
 
 public class OBlockTags extends IntrinsicHolderTagsProvider<Block> {
 

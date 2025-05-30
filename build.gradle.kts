@@ -35,7 +35,7 @@ plugins {
 }
 
 base {
-    archivesName = "$mod_name $minecraft_version"
+    archivesName = "$mod_name $minecraft_version-$mod_version"
 }
 
 mixin {
@@ -166,8 +166,6 @@ dependencies {
 }
 
 tasks.withType<Jar> {
-    archiveClassifier.set("raw")
-
     val now = LocalDateTime.now().toString()
     manifest {
         attributes(
@@ -213,6 +211,7 @@ tasks.jarJar {
 }
 
 tasks.jar {
+    archiveClassifier.set("raw")
     finalizedBy("reobfJar")
 }
 

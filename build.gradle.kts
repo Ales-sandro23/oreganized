@@ -31,6 +31,7 @@ plugins {
     id("org.spongepowered.mixin") version "0.7-SNAPSHOT"
     id("org.parchmentmc.librarian.forgegradle") version "1.+"
     id("com.diffplug.spotless") version "7.0.4"
+    id("org.sonarqube") version "6.2.0.5505"
 }
 
 base {
@@ -234,6 +235,18 @@ publishing {
     }
     repositories {
         mavenLocal()
+
+        val nexusToken = System.getenv("NEXUS_TOKEN")
+        val nexusUser = System.getenv("NEXUS_USER")
+        if (nexusToken != null && nexusUser != null) {
+            maven {
+                url = uri("https://registry.somethingcatchy.net/repository/maven-releases/")
+                credentials {
+                    username = nexusUser
+                    password = nexusToken
+                }
+            }
+        }
     }
 }
 
@@ -258,5 +271,13 @@ spotless {
     json {
         target("src/main/**/*.json")
         simple()
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", mod_id)
+        property("sonar.gradle.skipCompile", "true")
+        property("sonar.links.scm", "https://github.com/${repository}")
     }
 }

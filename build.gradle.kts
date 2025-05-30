@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.provider.inLenientMode
 import java.time.LocalDateTime
 
 val repository: String by extra
@@ -270,7 +271,7 @@ spotless {
 
     json {
         target("src/main/**/*.json")
-        simple()
+        gson().indentWithSpaces(2)
     }
 }
 

@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.provider.inLenientMode
 import java.time.LocalDateTime
 
 val repository: String by extra
@@ -44,13 +43,13 @@ mixin {
     config("${mod_id}.mixins.json")
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-//apply(from = "./buildSrc/spotless.gradle.kts")
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
+}
 
 minecraft {
     mappings("parchment", "2023.09.03-1.20.1")
-    //mappings channel: "official", version: minecraft_version
 
     accessTransformer(file("src/main/resources/META-INF/accesstransformer.cfg"))
 
@@ -219,19 +218,18 @@ tasks.jar {
 
 publishing {
     publications {
-        create<MavenPublication>("gpr") {
+        create<MavenPublication>("maven") {
             groupId = maven_group
-            artifactId = mod_name
+            artifactId = mod_id
             version = mod_version
 
             from(components["java"])
 
-            // TODO check if neccessary
-            //pom.withXml {
-            //    val node = asNode()
-            //    val list = node.get("dependencies") as NodeList
-            //    list.forEach { node.remove(it as Node) }
-            //}
+            pom.withXml {
+                val node = asNode()
+                val list = node.get("dependencies") as groovy.util.NodeList
+                list.forEach { node.remove(it as groovy.util.Node) }
+            }
         }
     }
     repositories {
@@ -249,13 +247,6 @@ publishing {
             }
         }
     }
-}
-
-// Disables Gradle's custom module metadata from being published to maven. The
-// metadata includes mapped dependencies which are not reasonably consumable by
-// other mod developers.
-tasks.withType<GenerateModuleMetadata> {
-    enabled = false
 }
 
 spotless {

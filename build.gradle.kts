@@ -28,6 +28,7 @@ val moonlight_lib_version: String by extra
 val dye_depot_version: String by extra
 val jade_version: String by extra
 val jei_version: String by extra
+val galena_hats_version: String by extra
 
 plugins {
     java
@@ -111,6 +112,8 @@ sourceSets.main {
 }
 
 repositories {
+    mavenLocal()
+
     maven {
         url = uri("https://maven.teamabnormals.com/")
         content {
@@ -137,6 +140,13 @@ repositories {
             includeGroup("dev.engine-room.flywheel")
         }
     }
+
+    maven {
+        url = uri("https://registry.somethingcatchy.net/repository/maven-releases/")
+        content {
+            includeGroup("dev.galena")
+        }
+    }
 }
 
 dependencies {
@@ -145,9 +155,19 @@ dependencies {
     annotationProcessor("org.spongepowered:mixin:${mixin_version}:processor")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")!!)
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}")!!) {
-        jarJar.ranged(this, "[${mixin_extras_version},)")
-    }
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixin_extras_version}") {
+        version {
+            strictly("[${mixin_extras_version},)")
+            prefer(mixin_extras_version)
+        }
+    })
+
+    implementation(fg.deobf(jarJar("dev.galena:hats-forge:${galena_hats_version}") {
+        version {
+            strictly("[${galena_hats_version},)")
+            prefer(galena_hats_version)
+        }
+    }))
 
     // Compatibilities
     implementation(fg.deobf("maven.modrinth:farmers-delight:${farmersdelight_version}"))
@@ -213,6 +233,7 @@ tasks.withType<ProcessResources> {
     }
 }
 
+jarJar.enable()
 tasks.jarJar {
     archiveClassifier.set("")
 }

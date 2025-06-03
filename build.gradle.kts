@@ -162,10 +162,11 @@ dependencies {
         }
     })
 
-    implementation(fg.deobf(jarJar("dev.galena:hats-forge:${galena_hats_version}") {
+    val hatsVersion = "${minecraft_version}-${galena_hats_version}"
+    implementation(fg.deobf(jarJar("dev.galena:hats-forge:${hatsVersion}") {
         version {
-            strictly("[${galena_hats_version},)")
-            prefer(galena_hats_version)
+            strictly("[${hatsVersion},)")
+            prefer(hatsVersion)
         }
     }))
 

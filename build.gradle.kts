@@ -149,6 +149,8 @@ repositories {
     }
 }
 
+jarJar.enable()
+
 dependencies {
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     implementation(fg.deobf("com.teamabnormals:blueprint:${minecraft_version}-${blueprint_version}"))
@@ -234,15 +236,17 @@ tasks.withType<ProcessResources> {
     }
 }
 
-jarJar.enable()
-tasks.jarJar {
-    archiveClassifier.set("")
-}
-
 tasks.jar {
-    archiveClassifier.set("raw")
+    archiveClassifier.set("slim")
     finalizedBy("reobfJar")
 }
+
+tasks.jarJar {
+    archiveClassifier.set("")
+    finalizedBy("reobfJarJar")
+}
+
+val upload = tasks.jarJar.get().archiveFile.get()
 
 publishing {
     publications {
@@ -251,7 +255,9 @@ publishing {
             artifactId = mod_id
             version = mod_version
 
-            from(components["java"])
+            artifact(tasks.getByName("sourcesJar"))
+            artifact(tasks.jar)
+            artifact(tasks.jarJar)
 
             pom.withXml {
                 val node = asNode()
@@ -305,8 +311,6 @@ sonar {
         property("sonar.links.scm", "https://github.com/${repository}")
     }
 }
-
-val upload = tasks.jarJar.get().archiveFile.get()
 
 modrinth {
     projectId = modrinth_project_id

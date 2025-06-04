@@ -277,6 +277,10 @@ publishing {
     }
 }
 
+tasks.withType<GenerateModuleMetadata> {
+    enabled = false
+}
+
 spotless {
     java {
         importOrder()

@@ -1,9 +1,5 @@
 package galena.oreganized;
 
-import static galena.oreganized.ModCompat.FARMERS_DELIGHT_ID;
-import static galena.oreganized.ModCompat.NETHERS_DELIGHT_ID;
-import static galena.oreganized.ModCompat.SHIELD_EXPANSION_ID;
-
 import com.google.common.collect.ImmutableBiMap;
 import com.mojang.serialization.Codec;
 import com.teamabnormals.blueprint.common.dispenser.FishBucketDispenseItemBehavior;
@@ -42,13 +38,6 @@ import galena.oreganized.index.OPotions;
 import galena.oreganized.index.OStructures;
 import galena.oreganized.network.OreganizedNetwork;
 import galena.oreganized.world.AddItemLootModifier;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Position;
@@ -105,6 +94,18 @@ import org.infernalstudios.shieldexp.init.ItemsInit;
 import umpaz.nethersdelight.common.registry.NDItems;
 import vectorwing.farmersdelight.common.registry.ModItems;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static galena.oreganized.ModCompat.FARMERS_DELIGHT_ID;
+import static galena.oreganized.ModCompat.NETHERS_DELIGHT_ID;
+import static galena.oreganized.ModCompat.SHIELD_EXPANSION_ID;
+
 @Mod(Oreganized.MOD_ID)
 public class Oreganized {
     public static final Logger LOGGER = LogManager.getLogger();
@@ -154,14 +155,13 @@ public class Oreganized {
 
         OreganizedNetwork.register();
 
-        if (ModList.get().isLoaded("create")) {
+        var createLoaded = ModList.get().getModContainerById("create")
+                .filter(it -> it.getModInfo().getVersion().getMajorVersion() >= 6)
+                .isPresent();
+
+        if (createLoaded) {
             CreateCompat.register();
         }
-
-        //CompatHandler.register();
-
-        //context.registerConfig(ModConfig.Type.COMMON, OreganizedConfig.COMMON_SPEC);
-        //context.registerConfig(ModConfig.Type.CLIENT, OreganizedConfig.CLIENT_SPEC);
     }
 
     private void injectVillagerTrades(VillagerTradesEvent event) {

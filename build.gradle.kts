@@ -96,7 +96,6 @@ minecraft {
 
         forEach {
             it.workingDirectory(project.file("run"))
-            //it.ideaModule ("${rootProject.name}.main")
             it.args("-mixin.config=${mod_id}.mixins.json")
             it.mods {
                 create(mod_id) {

@@ -25,6 +25,7 @@ import galena.oreganized.data.OItemModels;
 import galena.oreganized.data.OItemTags;
 import galena.oreganized.data.OLang;
 import galena.oreganized.data.OLootTables;
+import galena.oreganized.data.OPaintingVariantTags;
 import galena.oreganized.data.ORecipes;
 import galena.oreganized.data.ORegistries;
 import galena.oreganized.data.OSoundDefinitions;
@@ -274,6 +275,7 @@ public class Oreganized {
         generator.addProvider(server, datapackProvider);
         generator.addProvider(server, new OBiomeTags(output, lookupProvider, helper));
         generator.addProvider(server, new ODamageTags(output, lookupProvider, helper));
+        generator.addProvider(server, new OPaintingVariantTags(output, lookupProvider, helper));
         //generator.addProvider(server, new OPaintingVariantTags(output, lookupProvider, helper));
         //generator.addProvider(server, new OBiomeModifier.register(event));
 

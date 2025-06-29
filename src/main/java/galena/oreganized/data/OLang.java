@@ -31,6 +31,8 @@ public class OLang extends OLangProvider {
         addItem(OItems.SPEEDOMETER, "Speedometer");
         addBlock(OBlocks.PURPLE_DATURA, "Purple Datura");
         addBlock(OBlocks.WHITE_DATURA, "White Datura");
+        addBlock(OBlocks.POTTED_PURPLE_DATURA, "Potted Purple Datura");
+        addBlock(OBlocks.POTTED_WHITE_DATURA, "Potted White Datura");
         addBlock(OBlocks.RAW_SILVER_BLOCK, "Block of Raw Silver");
         addBlock(OBlocks.RAW_LEAD_BLOCK, "Block of Raw Lead");
         addBlock(OBlocks.SILVER_BLOCK, "Block of Silver");

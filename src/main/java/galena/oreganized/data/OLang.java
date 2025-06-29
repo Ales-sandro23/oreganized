@@ -58,7 +58,7 @@ public class OLang extends OLangProvider {
         addSubtitle("entity", "shrapnel_bomb.primed", "Shrapnel Bomb fizzes");
         addSubtitle("entity", "bolt_hit", "Bolt hits");
         addSubtitle("block", "gargoyle.growl", "Gargoyle growls");
-        add("tooltip.oreganized.speed", "Speed: ");
+        add("tooltip.oreganized.speed", "Speed: %s");
         add("tooltip.oreganized.heat1", "Cold");
         add("tooltip.oreganized.heat2", "Normal");
         add("tooltip.oreganized.heat3", "Fine");

@@ -10,6 +10,7 @@ import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEntityTypes;
 import galena.oreganized.index.OItems;
 import galena.oreganized.world.IDoorProgressHolder;
+import galena.oreganized.world.IMotionHolder;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
@@ -24,7 +25,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Items;
@@ -61,18 +61,15 @@ public class OreganizedClient {
                 return stack.getOrCreateTag().getInt("Level");
             }
         });
+
         ItemProperties.register(OItems.SPEEDOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
-            if (entity == null) {
-                return 0;
-            } else {
-
-
-                entity.getRootVehicle();
-                Entity entity2 = Minecraft.getInstance().player.getRootVehicle();
-                int timed = (int) Math.round(entity2.getDeltaMovement().length()*15);
-                return Mth.clamp(Math.round(entity.getDeltaMovement().length()*15),0,16);
-            }
+            if (entity == null) return 0;
+            var vehicle = entity.getRootVehicle();
+            if (!(vehicle instanceof IMotionHolder motionHolder)) return 0;
+            Oreganized.LOGGER.info(motionHolder.oreganised$getMotion());
+            return Mth.clamp(Math.round(motionHolder.oreganised$getMotion() * 100), 0, 16);
         });
+
         ItemProperties.register(OItems.THERMOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
             if (entity == null) {
                 return 0;

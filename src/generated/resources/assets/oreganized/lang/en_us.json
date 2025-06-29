@@ -225,7 +225,7 @@
   "tooltip.oreganized.heat8": "Searing",
   "tooltip.oreganized.heat9": "Scorching",
   "tooltip.oreganized.lead": "Lead material",
-  "tooltip.oreganized.speed": "Speed: ",
+  "tooltip.oreganized.speed": "Speed: %s",
   "tooltip.oreganized.wip.description": "Usages for this item will be available in a future release",
   "tooltip.oreganized.wip.title": "Work In Progress",
   "trim_material.oreganized.electrum": "Electrum material",

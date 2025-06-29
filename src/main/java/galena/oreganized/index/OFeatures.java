@@ -6,10 +6,10 @@ import static net.minecraft.tags.BlockTags.STONE_ORE_REPLACEABLES;
 import com.google.common.collect.ImmutableList;
 import galena.oreganized.Oreganized;
 import java.util.List;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.placement.OrePlacements;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
@@ -65,8 +65,12 @@ public class OFeatures {
             context.register(SILVER_ORE_EXTRA, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ImmutableList.of(OreConfiguration.target(new TagMatchTest(STONE_ORE_REPLACEABLES), OBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(DEEPSLATE_ORE_REPLACEABLES), OBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())), 2, 1F)));
             context.register(LEAD_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ImmutableList.of(OreConfiguration.target(new TagMatchTest(STONE_ORE_REPLACEABLES), OBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(DEEPSLATE_ORE_REPLACEABLES), OBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState())), 8)));
             context.register(LEAD_ORE_EXTRA, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ImmutableList.of(OreConfiguration.target(new TagMatchTest(STONE_ORE_REPLACEABLES), OBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(DEEPSLATE_ORE_REPLACEABLES), OBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState())), 8)));
-            context.register(DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, FeatureUtils.simpleRandomPatchConfiguration(96,PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.WHITE_DATURA.get()))))));
-            context.register(PURPLE_DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, FeatureUtils.simpleRandomPatchConfiguration(96,PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.PURPLE_DATURA.get()))))));
+            context.register(DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.WHITE_DATURA.get()))))));
+            context.register(PURPLE_DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.PURPLE_DATURA.get()))))));
+        }
+
+        private static RandomPatchConfiguration daturaPatch(Holder<PlacedFeature> feature) {
+            return new RandomPatchConfiguration(96, 4, 3, feature);
         }
     }
 
@@ -79,6 +83,7 @@ public class OFeatures {
         public static final ResourceKey<PlacedFeature> DATURA = create("datura");
 
         public static final ResourceKey<PlacedFeature> PURPLE_DATURA = create("purple_datura");
+
         public static ResourceKey<PlacedFeature> create(String name) {
             return ResourceKey.create(Registries.PLACED_FEATURE, Oreganized.modLoc(name));
         }
@@ -94,6 +99,7 @@ public class OFeatures {
             context.register(PURPLE_DATURA, new PlacedFeature(features.getOrThrow(Configured.PURPLE_DATURA), rareOrePlacement(25, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES))));
 
         }
+
         private static List<PlacementModifier> rareOrePlacement(int pChance, PlacementModifier pHeightRange) {
             return orePlacement(RarityFilter.onAverageOnceEvery(pChance), pHeightRange);
         }

@@ -10,14 +10,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(ClientTooltipComponentManager.class)
+@Mixin(value = ClientTooltipComponentManager.class, remap = false)
 public class ClientTooltipComponentMixin {
-    @Inject(method = "createClientTooltipComponent(Lnet/minecraft/world/inventory/tooltip/TooltipComponent;)Lnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipComponent;",at=@At("HEAD"),cancellable = true,remap = false)
-    private static void create(TooltipComponent component, CallbackInfoReturnable<ClientTooltipComponent> cir){
-        if(component instanceof ThermometerTooltip thermometerTooltip){
+
+    @Inject(
+            method = "createClientTooltipComponent(Lnet/minecraft/world/inventory/tooltip/TooltipComponent;)Lnet/minecraft/client/gui/screens/inventory/tooltip/ClientTooltipComponent;",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private static void create(TooltipComponent component, CallbackInfoReturnable<ClientTooltipComponent> cir) {
+        if (component instanceof ThermometerTooltip thermometerTooltip) {
             cir.cancel();
             cir.setReturnValue(new ClientThermometerTooltip(thermometerTooltip));
         }
 
     }
+
 }

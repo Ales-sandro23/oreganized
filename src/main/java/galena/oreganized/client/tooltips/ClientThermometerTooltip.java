@@ -16,7 +16,7 @@ public class ClientThermometerTooltip implements ClientTooltipComponent {
             ,Component.translatable("tooltip.oreganized.heat8"),
             Component.translatable("tooltip.oreganized.heat9")};
     public ClientThermometerTooltip(ThermometerTooltip thermometerTooltip) {
-        this.heat = thermometerTooltip.getHeat();
+        this.heat = thermometerTooltip.heat();
     }
     @Override
     public int getHeight() {

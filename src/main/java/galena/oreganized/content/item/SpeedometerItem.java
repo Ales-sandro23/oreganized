@@ -18,20 +18,23 @@ public class SpeedometerItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if(pPlayer.getCooldowns().isOnCooldown(OItems.SPEEDOMETER.get())){
-            return super.use(pLevel, pPlayer, pUsedHand);
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        if (player.getCooldowns().isOnCooldown(OItems.SPEEDOMETER.get())) {
+            return super.use(level, player, hand);
         }
-        if(!pLevel.isClientSide() && pPlayer instanceof ServerPlayer player && player.getDeltaMovement().y<(-3.5)){
-            OCriteriaTriggers.TERMINAL_VELOCITY.trigger(player);
+
+        if (player instanceof ServerPlayer serverPlayer && player.getDeltaMovement().y < (-3.5)) {
+            OCriteriaTriggers.TERMINAL_VELOCITY.trigger(serverPlayer);
         }
-        pPlayer.getCooldowns().addCooldown(OItems.SPEEDOMETER.get(), 40);
-        if(pLevel.isClientSide() && pUsedHand == InteractionHand.MAIN_HAND){
-            if(Minecraft.getInstance().gui instanceof GuiThermometerAccessor accessor){
-                accessor.oreganized2$setToolHighlightTimer(60);
+
+        player.getCooldowns().addCooldown(OItems.SPEEDOMETER.get(), 40);
+        if (level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+            if (Minecraft.getInstance().gui instanceof GuiThermometerAccessor accessor) {
+                accessor.oreganized$setToolHighlightTimer(60);
             }
         }
-        return super.use(pLevel, pPlayer, pUsedHand);
+
+        return super.use(level, player, hand);
     }
 
 

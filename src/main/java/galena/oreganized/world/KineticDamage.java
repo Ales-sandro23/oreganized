@@ -21,7 +21,7 @@ public class KineticDamage {
         if (mods.isEmpty()) return;
         if (!(cause instanceof IMotionHolder motionHolder)) return;
 
-        var motion = Math.sqrt(motionHolder.oreganised$getMotion()) - 0.15;
+        var motion = Math.sqrt(motionHolder.oreganised$getHorizontalMotion()) - 0.15;
 
         var factor = Math.min(motion / 0.12, 1F);
         if (factor <= 0.0) return;

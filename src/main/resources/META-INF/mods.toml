@@ -66,6 +66,6 @@ This mod is designed to be a Vanilla plus mod while also adding unique uses and 
 [[dependencies.${mod_id}]]
     modId="create"
     mandatory=false
-    versionRange=">=6.0.0"
+    versionRange="*"
     ordering="AFTER"
     side="BOTH"

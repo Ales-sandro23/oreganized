@@ -154,14 +154,13 @@ public class Oreganized {
 
         OreganizedNetwork.register();
 
-        if (ModList.get().isLoaded("create")) {
+        var createLoaded = ModList.get().getModContainerById("create")
+                .filter(it -> it.getModInfo().getVersion().getMajorVersion() >= 6)
+                .isPresent();
+
+        if (createLoaded) {
             CreateCompat.register();
         }
-
-        //CompatHandler.register();
-
-        //context.registerConfig(ModConfig.Type.COMMON, OreganizedConfig.COMMON_SPEC);
-        //context.registerConfig(ModConfig.Type.CLIENT, OreganizedConfig.CLIENT_SPEC);
     }
 
     private void injectVillagerTrades(VillagerTradesEvent event) {

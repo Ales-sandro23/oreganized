@@ -5,7 +5,6 @@ import java.time.LocalDateTime
 val repository: String by extra
 val mod_name: String by extra
 val mod_author: String by extra
-val mod_version: String by extra
 val mod_id: String by extra
 val release_type: String by extra
 val modrinth_project_id: String by extra
@@ -29,6 +28,8 @@ val dye_depot_version: String by extra
 val jade_version: String by extra
 val jei_version: String by extra
 val galena_hats_version: String by extra
+
+val mod_version = System.getenv("RELEASE_VERSION") ?: extra["mod_version"] as String
 
 plugins {
     java
@@ -96,7 +97,6 @@ minecraft {
 
         forEach {
             it.workingDirectory(project.file("run"))
-            //it.ideaModule ("${rootProject.name}.main")
             it.args("-mixin.config=${mod_id}.mixins.json")
             it.mods {
                 create(mod_id) {
@@ -149,6 +149,8 @@ repositories {
     }
 }
 
+jarJar.enable()
+
 dependencies {
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
     implementation(fg.deobf("com.teamabnormals:blueprint:${minecraft_version}-${blueprint_version}"))
@@ -162,10 +164,11 @@ dependencies {
         }
     })
 
-    implementation(fg.deobf(jarJar("dev.galena:hats-forge:${galena_hats_version}") {
+    val hatsVersion = "${minecraft_version}-${galena_hats_version}"
+    implementation(fg.deobf(jarJar("dev.galena:hats-forge:${hatsVersion}") {
         version {
-            strictly("[${galena_hats_version},)")
-            prefer(galena_hats_version)
+            strictly("[${hatsVersion},)")
+            prefer(hatsVersion)
         }
     }))
 
@@ -233,15 +236,17 @@ tasks.withType<ProcessResources> {
     }
 }
 
-jarJar.enable()
-tasks.jarJar {
-    archiveClassifier.set("")
-}
-
 tasks.jar {
-    archiveClassifier.set("raw")
+    archiveClassifier.set("slim")
     finalizedBy("reobfJar")
 }
+
+tasks.jarJar {
+    archiveClassifier.set("")
+    finalizedBy("reobfJarJar")
+}
+
+val upload = tasks.jarJar.get().archiveFile.get()
 
 publishing {
     publications {
@@ -250,7 +255,9 @@ publishing {
             artifactId = mod_id
             version = mod_version
 
-            from(components["java"])
+            artifact(tasks.getByName("sourcesJar"))
+            artifact(tasks.jar)
+            artifact(tasks.jarJar)
 
             pom.withXml {
                 val node = asNode()
@@ -274,6 +281,10 @@ publishing {
             }
         }
     }
+}
+
+tasks.withType<GenerateModuleMetadata> {
+    enabled = false
 }
 
 spotless {
@@ -301,8 +312,6 @@ sonar {
     }
 }
 
-val upload = tasks.jarJar.get().archiveFile.get()
-
 modrinth {
     projectId = modrinth_project_id
     versionNumber = mod_version
@@ -322,7 +331,6 @@ tasks.register<TaskPublishCurseForge>("curseforge") {
         changelogType = Constants.CHANGELOG_MARKDOWN
         changelog = System.getenv("CHANGELOG")
         releaseType = release_type
-        version = mod_version
         displayName = "$mod_name $mod_version"
         addGameVersion(minecraft_version)
         addRelation("blueprint", Constants.RELATION_REQUIRED)

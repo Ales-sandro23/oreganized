@@ -117,7 +117,8 @@ public abstract class GuiMixin implements GuiThermometerAccessor {
             long time = Minecraft.getInstance().level.getGameTime();
             var vehicle = (IMotionHolder) Minecraft.getInstance().player.getRootVehicle();
             double speed = vehicle.oreganised$getMotion();
-            var tooltip = Component.empty().append(Component.translatable("tooltip.oreganized.speed", speed)).withStyle((style) -> {
+            var formattedSpeed = String.format("%.2f", speed);
+            var tooltip = Component.empty().append(Component.translatable("tooltip.oreganized.speed", formattedSpeed)).withStyle((style) -> {
                 return style.withColor(new Color(1f, 1, 0.9f).getRGB());
             });
             var arrow = Component.empty().append("->").withStyle((style) -> {

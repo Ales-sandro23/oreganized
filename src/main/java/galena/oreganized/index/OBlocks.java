@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.fml.common.Mod;
@@ -51,23 +52,55 @@ public class OBlocks {
 
     public static ImmutableBiMap<Block, Block> WAXED_BLOCKS;
 
+    private static BlockBehaviour.Properties glanceProperties() {
+        return BlockBehaviour.Properties.of().explosionResistance(6).strength(1.5F).mapColor(MapColor.CLAY);    
+    };
+
+    private static final MapColor[] LEAD_MAP_COLORS = {
+            MapColor.TERRACOTTA_LIGHT_BLUE,
+            MapColor.TERRACOTTA_MAGENTA,
+            MapColor.TERRACOTTA_PINK
+    };
+
+    private static BlockBehaviour.Properties leadProperties() {
+        return BlockBehaviour.Properties.of()
+                .strength(5.0F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.METAL)
+                .lightLevel(IMeltableBlock::getLightLevel)
+                .mapColor(OBlocks::leadMapColor)
+                .randomTicks();
+    }
+
+    private static MapColor leadMapColor(BlockState state) {
+        if(!(state.getBlock() instanceof MeltableBlock block)) {
+            return LEAD_MAP_COLORS[0];
+        }
+
+        var goopyness = Math.min(2, block.getGoopyness(state));
+        return LEAD_MAP_COLORS[goopyness];
+    }
+
+    private static BlockBehaviour.Properties leadDecoProperties() {
+        return leadProperties().noOcclusion().isValidSpawn(($1, $2, $3, $4) -> false);
+    }
 
     // Glance
-    public static final RegistryObject<Block> GLANCE = register("glance", () -> new Block(BlockBehaviour.Properties.of().explosionResistance(6).strength(1.5F)));
-    public static final RegistryObject<Block> POLISHED_GLANCE = register("polished_glance", () -> new Block(BlockBehaviour.Properties.copy(GLANCE.get())));
-    public static final RegistryObject<Block> GLANCE_BRICKS = register("glance_bricks", () -> new Block(BlockBehaviour.Properties.copy(POLISHED_GLANCE.get())));
-    public static final RegistryObject<Block> CHISELED_GLANCE = register("chiseled_glance", () -> new Block(BlockBehaviour.Properties.copy(GLANCE.get())));
-    public static final RegistryObject<SlabBlock> GLANCE_SLAB = register("glance_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(GLANCE.get())));
-    public static final RegistryObject<SlabBlock> POLISHED_GLANCE_SLAB = register("polished_glance_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(POLISHED_GLANCE.get())));
-    public static final RegistryObject<SlabBlock> GLANCE_BRICK_SLAB = register("glance_brick_slab", () -> new SlabBlock(BlockBehaviour.Properties.copy(GLANCE_BRICKS.get())));
-    public static final RegistryObject<StairBlock> GLANCE_STAIRS = register("glance_stairs", () -> new StairBlock(GLANCE.get()::defaultBlockState, BlockBehaviour.Properties.copy(GLANCE.get())));
-    public static final RegistryObject<StairBlock> POLISHED_GLANCE_STAIRS = register("polished_glance_stairs", () -> new StairBlock(POLISHED_GLANCE.get()::defaultBlockState, BlockBehaviour.Properties.copy(POLISHED_GLANCE.get())));
-    public static final RegistryObject<StairBlock> GLANCE_BRICK_STAIRS = register("glance_brick_stairs", () -> new StairBlock(GLANCE_BRICKS.get()::defaultBlockState, BlockBehaviour.Properties.copy(GLANCE_BRICKS.get())));
-    public static final RegistryObject<WallBlock> GLANCE_WALL = register("glance_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(GLANCE.get())));
-    public static final RegistryObject<WallBlock> GLANCE_BRICK_WALL = register("glance_brick_wall", () -> new WallBlock(BlockBehaviour.Properties.copy(GLANCE_BRICKS.get())));
+    public static final RegistryObject<Block> GLANCE = register("glance", () -> new Block(glanceProperties()));
+    public static final RegistryObject<Block> POLISHED_GLANCE = register("polished_glance", () -> new Block(glanceProperties()));
+    public static final RegistryObject<Block> GLANCE_BRICKS = register("glance_bricks", () -> new Block(glanceProperties()));
+    public static final RegistryObject<Block> CHISELED_GLANCE = register("chiseled_glance", () -> new Block(glanceProperties()));
+    public static final RegistryObject<SlabBlock> GLANCE_SLAB = register("glance_slab", () -> new SlabBlock(glanceProperties()));
+    public static final RegistryObject<SlabBlock> POLISHED_GLANCE_SLAB = register("polished_glance_slab", () -> new SlabBlock(glanceProperties()));
+    public static final RegistryObject<SlabBlock> GLANCE_BRICK_SLAB = register("glance_brick_slab", () -> new SlabBlock(glanceProperties()));
+    public static final RegistryObject<StairBlock> GLANCE_STAIRS = register("glance_stairs", () -> new StairBlock(GLANCE.get()::defaultBlockState, glanceProperties()));
+    public static final RegistryObject<StairBlock> POLISHED_GLANCE_STAIRS = register("polished_glance_stairs", () -> new StairBlock(POLISHED_GLANCE.get()::defaultBlockState, glanceProperties()));
+    public static final RegistryObject<StairBlock> GLANCE_BRICK_STAIRS = register("glance_brick_stairs", () -> new StairBlock(GLANCE_BRICKS.get()::defaultBlockState, glanceProperties()));
+    public static final RegistryObject<WallBlock> GLANCE_WALL = register("glance_wall", () -> new WallBlock(glanceProperties()));
+    public static final RegistryObject<WallBlock> GLANCE_BRICK_WALL = register("glance_brick_wall", () -> new WallBlock(glanceProperties()));
 
-    public static final RegistryObject<Block> SPOTTED_GLANCE = register("spotted_glance", () -> new SpottedGlanceBlock(BlockBehaviour.Properties.copy(GLANCE.get())));
-    public static final RegistryObject<Block> WAXED_SPOTTED_GLANCE = register("waxed_spotted_glance", () -> new Block(BlockBehaviour.Properties.copy(SPOTTED_GLANCE.get())));
+    public static final RegistryObject<Block> SPOTTED_GLANCE = register("spotted_glance", () -> new SpottedGlanceBlock(glanceProperties()));
+    public static final RegistryObject<Block> WAXED_SPOTTED_GLANCE = register("waxed_spotted_glance", () -> new Block(glanceProperties()));
 
     // Ores
     public static final RegistryObject<Block> SILVER_ORE = register("silver_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.GOLD_ORE)));
@@ -77,8 +110,8 @@ public class OBlocks {
     public static final RegistryObject<Block> DEEPSLATE_LEAD_ORE = register("deepslate_lead_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_GOLD_ORE)));
 
     // Storage Blocks
-    public static final RegistryObject<Block> RAW_SILVER_BLOCK = register("raw_silver_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)));
-    public static final RegistryObject<Block> RAW_LEAD_BLOCK = register("raw_lead_block", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK)));
+    public static final RegistryObject<Block> RAW_SILVER_BLOCK = register("raw_silver_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK).mapColor(MapColor.CLAY)));
+    public static final RegistryObject<Block> RAW_LEAD_BLOCK = register("raw_lead_block", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.RAW_IRON_BLOCK).mapColor(LEAD_MAP_COLORS[0])));
     public static final RegistryObject<Block> SILVER_BLOCK = register("silver_block", () -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)
             .strength(5.0F, 6.0F).sound(SoundType.METAL)));
 
@@ -88,19 +121,6 @@ public class OBlocks {
     public static final RegistryObject<Block> PURPLE_DATURA = register("purple_datura", () -> new FlowerBlock(OEffects.STUNNING, 21, BlockBehaviour.Properties.copy(Blocks.ALLIUM)));
     public static final RegistryObject<FlowerPotBlock> POTTED_WHITE_DATURA = HELPER.createBlockNoItem("potted_datura", () -> new FlowerPotBlock(WHITE_DATURA.get(), BlockBehaviour.Properties.copy(Blocks.POTTED_OXEYE_DAISY)));
     public static final RegistryObject<FlowerPotBlock> POTTED_PURPLE_DATURA = HELPER.createBlockNoItem("potted_purple_datura", () -> new FlowerPotBlock(PURPLE_DATURA.get(), BlockBehaviour.Properties.copy(Blocks.POTTED_ALLIUM)));
-
-    private static BlockBehaviour.Properties leadProperties() {
-        return BlockBehaviour.Properties.of()
-                .strength(5.0F, 6.0F)
-                .requiresCorrectToolForDrops()
-                .sound(SoundType.METAL)
-                .lightLevel(IMeltableBlock::getLightLevel)
-                .randomTicks();
-    }
-
-    private static BlockBehaviour.Properties leadDecoProperties() {
-        return leadProperties().noOcclusion().isValidSpawn(($1, $2, $3, $4) -> false);
-    }
 
     public static final RegistryObject<Block> LEAD_BOLT_CRATE = register("lead_bolt_crate", () -> new Block(BlockBehaviour.Properties.of().strength(1.5F).sound(SoundType.WOOD)));
 
@@ -117,7 +137,7 @@ public class OBlocks {
     public static final RegistryObject<LeadTrapdoorBlock> LEAD_TRAPDOOR = register("lead_trapdoor", () -> new LeadTrapdoorBlock(leadDecoProperties()));
     public static final RegistryObject<LeadBarsBlock> LEAD_BARS = register("lead_bars", () -> new LeadBarsBlock(leadDecoProperties()));
 
-    public static final RegistryObject<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL)));
+    public static final RegistryObject<Block> ELECTRUM_BLOCK = register("electrum_block", () -> new Block(BlockBehaviour.Properties.of().strength(5.0F, 6.0F).requiresCorrectToolForDrops().sound(SoundType.METAL).mapColor(MapColor.SAND)));
 
     // Redstone components
     public static final RegistryObject<Block> SHRAPNEL_BOMB = register("shrapnel_bomb", () -> new ShrapnelBombBlock(BlockBehaviour.Properties.copy(Blocks.TNT)));

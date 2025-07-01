@@ -29,6 +29,7 @@ public class OLang extends OLangProvider {
         addItem(OItems.SHRAPNEL_BOMB_MINECART, "Minecart with Shrapnel Bomb");
         addItem(OItems.THERMOMETER, "Thermometer");
         addItem(OItems.SPEEDOMETER, "Speedometer");
+        addItem(OItems.UNKNOWN_DEVICE, "Unknown Device");
         addBlock(OBlocks.PURPLE_DATURA, "Purple Datura");
         addBlock(OBlocks.WHITE_DATURA, "White Datura");
         addBlock(OBlocks.POTTED_PURPLE_DATURA, "Potted Purple Datura");

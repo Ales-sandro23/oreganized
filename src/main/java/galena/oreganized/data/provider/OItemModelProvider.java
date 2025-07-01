@@ -4,16 +4,19 @@ import static galena.oreganized.ModCompat.SHIELD_EXPANSION_ID;
 
 import com.teamabnormals.blueprint.core.data.client.BlueprintItemModelProvider;
 import galena.oreganized.Oreganized;
+import galena.oreganized.content.item.DeviceItem;
 import java.util.function.Supplier;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 public abstract class OItemModelProvider extends BlueprintItemModelProvider {
 
@@ -25,8 +28,8 @@ public abstract class OItemModelProvider extends BlueprintItemModelProvider {
         return ForgeRegistries.BLOCKS.getKey(block.get()).getPath();
     }
 
-    private ResourceLocation texture(String name) {
-        return modLoc("block/" + name);
+    private ResourceLocation blockTexture(Supplier<? extends Block> block) {
+        return key(block.get()).withPrefix("block/");
     }
 
     public ItemModelBuilder block(Supplier<? extends Block> block) {
@@ -45,29 +48,31 @@ public abstract class OItemModelProvider extends BlueprintItemModelProvider {
         return blockFlat(block, blockName(fullBlock));
     }
 
-    public ItemModelBuilder blockFlat(Supplier<? extends Block> block, String name) {
-        return withExistingParent(blockName(block), mcLoc("item/generated"))
-                .texture("layer0", modLoc("block/" + name));
+    public ItemModelBuilder generated(String name, ResourceLocation texture) {
+        return withExistingParent(name, mcLoc("item/generated"))
+                .texture("layer0", texture);
     }
 
-    public ItemModelBuilder blockFlatWithItemName(Supplier<? extends Block> block, String name) {
-        return withExistingParent(blockName(block), mcLoc("item/generated"))
-                .texture("layer0", modLoc("item/" + name));
+    public ItemModelBuilder generated(Supplier<? extends ItemLike> itemLike, ResourceLocation texture) {
+        return generated(name(itemLike.get()), texture);
+    }
+
+    public ItemModelBuilder blockFlat(Supplier<? extends Block> block, String name) {
+        return generated(block, modLoc("block/" + name));
     }
 
     public ItemModelBuilder normalItem(Supplier<? extends Item> item) {
-        return withExistingParent(ForgeRegistries.ITEMS.getKey(item.get()).getPath(), mcLoc("item/generated"))
-                .texture("layer0", modLoc("item/" + ForgeRegistries.ITEMS.getKey(item.get()).getPath()));
+        return generated(item, itemTexture(item.get()));
     }
 
     public ItemModelBuilder toolItem(Supplier<? extends Item> item) {
         return withExistingParent(ForgeRegistries.ITEMS.getKey(item.get()).getPath(), mcLoc("item/handheld"))
-                .texture("layer0", modLoc("item/" + ForgeRegistries.ITEMS.getKey(item.get()).getPath()));
+                .texture("layer0", itemTexture(item.get()));
     }
 
     public ItemModelBuilder shieldItem(Supplier<? extends Item> item) {
-        var texture = modLoc("item/" + ForgeRegistries.ITEMS.getKey(item.get()).getPath());
-        var name = ForgeRegistries.ITEMS.getKey(item.get()).getPath();
+        var texture = itemTexture(item.get());
+        var name = name(item.get());
 
         var blockingModel = withExistingParent(name + "_blocking", new ResourceLocation(SHIELD_EXPANSION_ID, "item/netherite_shield_blocking"))
                 .guiLight(BlockModel.GuiLight.FRONT)
@@ -90,13 +95,21 @@ public abstract class OItemModelProvider extends BlueprintItemModelProvider {
     }
 
     public ItemModelBuilder wall(Supplier<? extends WallBlock> wall, Supplier<? extends Block> fullBlock) {
-        return wallInventory(ForgeRegistries.BLOCKS.getKey(wall.get()).getPath(), texture(blockName(fullBlock)));
+        return wallInventory(ForgeRegistries.BLOCKS.getKey(wall.get()).getPath(), blockTexture(fullBlock));
     }
 
-    public ItemModelBuilder twoLayered(String name, ResourceLocation texture, ResourceLocation overlayTexture) {
-        existingFileHelper.trackGenerated(overlayTexture, TEXTURE);
-        return withExistingParent(name, "item/generated")
-                .texture("layer0", texture)
-                .texture("layer1", overlayTexture);
+    public ItemModelBuilder unknownDevice(RegistryObject<Item> item) {
+        var model = withExistingParent(name(item.get()), "item/generated");
+
+        for(int i = 0; i < DeviceItem.FRAMES; i++) {
+            var subName = key(item.get()).withSuffix("_" + i);
+            var subModel = generated(subName.getPath(), subName.withPrefix("item/"));
+            model.override()
+                    .model(subModel)
+                    .predicate(DeviceItem.PROPERTY_KEY, ((float) i) / DeviceItem.FRAMES)
+                    .end();
+        }
+
+        return model;
     }
 }

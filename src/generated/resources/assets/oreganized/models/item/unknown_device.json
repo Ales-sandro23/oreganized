@@ -1,0 +1,65 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "oreganized:item/unknown_device_0",
+      "predicate": {
+        "oreganized:device_value": 0.0
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_1",
+      "predicate": {
+        "oreganized:device_value": 0.1
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_2",
+      "predicate": {
+        "oreganized:device_value": 0.2
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_3",
+      "predicate": {
+        "oreganized:device_value": 0.3
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_4",
+      "predicate": {
+        "oreganized:device_value": 0.4
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_5",
+      "predicate": {
+        "oreganized:device_value": 0.5
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_6",
+      "predicate": {
+        "oreganized:device_value": 0.6
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_7",
+      "predicate": {
+        "oreganized:device_value": 0.7
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_8",
+      "predicate": {
+        "oreganized:device_value": 0.8
+      }
+    },
+    {
+      "model": "oreganized:item/unknown_device_9",
+      "predicate": {
+        "oreganized:device_value": 0.9
+      }
+    }
+  ]
+}

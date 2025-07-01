@@ -6,6 +6,7 @@ import galena.oreganized.client.render.entity.LeadBoltRender;
 import galena.oreganized.client.render.entity.ShrapnelBombMinecartRender;
 import galena.oreganized.client.render.entity.ShrapnelBombRender;
 import galena.oreganized.client.render.gui.StunningOverlay;
+import galena.oreganized.content.item.DeviceItem;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEntityTypes;
 import galena.oreganized.index.OItems;
@@ -66,7 +67,6 @@ public class OreganizedClient {
             if (entity == null) return 0;
             var vehicle = entity.getRootVehicle();
             if (!(vehicle instanceof IMotionHolder motionHolder)) return 0;
-            Oreganized.LOGGER.info(motionHolder.oreganised$getMotion());
             return Mth.clamp(Math.round(motionHolder.oreganised$getMotion() * 100), 0, 16);
         });
 
@@ -85,6 +85,8 @@ public class OreganizedClient {
         ItemProperties.register(OItems.ELECTRUM_SHIELD.get(), new ResourceLocation("blocking"), (stack, level, user, i) ->
                 user != null && user.isUsingItem() && user.getUseItem() == stack ? 1.0F : 0.0F
         );
+
+        ItemProperties.register(OItems.UNKNOWN_DEVICE.get(), DeviceItem.PROPERTY_KEY, new DevicePropertyFunction());
     }
 
     private static void registerBlockRenderers() {

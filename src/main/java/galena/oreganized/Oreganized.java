@@ -351,6 +351,7 @@ public class Oreganized {
         putBefore(entries, Items.SPYGLASS, OItems.SILVER_MIRROR);
         putBefore(entries, OItems.SILVER_MIRROR.get(), OItems.THERMOMETER);
         putBefore(entries, OItems.THERMOMETER.get(), OItems.SPEEDOMETER);
+        putBefore(entries, OItems.SPEEDOMETER.get(), OItems.UNKNOWN_DEVICE);
         putAfter(entries, Items.TNT_MINECART, OItems.SHRAPNEL_BOMB_MINECART);
         putBefore(entries, Items.MUSIC_DISC_5, OItems.MUSIC_DISC_STRUCTURE);
         putAfter(entries, Items.SHEARS, OItems.SCRIBE);

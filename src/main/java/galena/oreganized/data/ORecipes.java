@@ -109,6 +109,14 @@ public class ORecipes extends ORecipeProvider {
                 .define('O', Items.COMPASS)
                 .unlockedBy("has_electrum_ingot", has(OItems.ELECTRUM_INGOT.get()))
                 .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, OItems.UNKNOWN_DEVICE.get())
+                .pattern(" O ")
+                .pattern("OXO")
+                .pattern(" O ")
+                .define('X', Items.REDSTONE)
+                .define('O', Items.NETHERITE_SCRAP)
+                .unlockedBy("has_electrum_ingot", has(OItems.ELECTRUM_INGOT.get()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, OBlocks.SPOTTED_GLANCE.get())
                 .pattern(" X ")
                 .pattern("XOX")

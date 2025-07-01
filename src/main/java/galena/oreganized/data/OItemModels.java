@@ -103,6 +103,8 @@ public class OItemModels extends OItemModelProvider {
             var unwaxed = ColorCompat.createId("concrete_powder", color);
             withExistingParent(blockName(waxed), unwaxed.withPrefix("block/"));
         });
+
+        unknownDevice(OItems.UNKNOWN_DEVICE);
     }
 
 }

@@ -23,6 +23,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -76,6 +77,8 @@ public class OLootTables extends LootTableProvider {
             dropSelf(OBlocks.RAW_SILVER_BLOCK);
             dropSelf(OBlocks.RAW_LEAD_BLOCK);
             dropSelf(OBlocks.SILVER_BLOCK);
+            dropSelf(OBlocks.WHITE_DATURA);
+            dropSelf(OBlocks.PURPLE_DATURA);
             dropSelf(OBlocks.LEAD_BLOCK);
             dropSelf(OBlocks.LEAD_BRICKS);
             dropSelf(OBlocks.LEAD_PILLAR);
@@ -85,6 +88,9 @@ public class OLootTables extends LootTableProvider {
             dropSelf(OBlocks.GARGOYLE);
             dropSelf(OBlocks.SHRAPNEL_BOMB);
             dropSelf(OBlocks.LEAD_BOLT_CRATE);
+
+            pottedPlant(OBlocks.POTTED_PURPLE_DATURA);
+            pottedPlant(OBlocks.POTTED_WHITE_DATURA);
 
             grooved(OBlocks.GROOVED_ICE, Blocks.ICE);
             grooved(OBlocks.GROOVED_BLUE_ICE, Blocks.BLUE_ICE);
@@ -114,6 +120,10 @@ public class OLootTables extends LootTableProvider {
             OBlocks.CRYSTAL_GLASS.forEach((c, b) -> dropAsSilk(b));
             OBlocks.CRYSTAL_GLASS_PANES.forEach((c, b) -> dropAsSilk(b));
             OBlocks.WAXED_CONCRETE_POWDER.forEach((c, b) -> dropSelf(b));
+        }
+
+        private void pottedPlant(Supplier<? extends FlowerPotBlock> block) {
+            dropPottedContents(block.get());
         }
 
         private void grooved(Supplier<Block> block, Block other) {

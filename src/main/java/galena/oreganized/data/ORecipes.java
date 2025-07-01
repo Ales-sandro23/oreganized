@@ -91,7 +91,24 @@ public class ORecipes extends ORecipeProvider {
         stonecutting(OBlocks.POLISHED_GLANCE, OBlocks.GLANCE_BRICK_WALL.get()).save(consumer, Oreganized.modLoc("stonecutting/glance_brick_wall_from_polished"));
 
         makeWaxed(OBlocks.WAXED_SPOTTED_GLANCE, OBlocks.SPOTTED_GLANCE).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS,Items.PURPLE_DYE).requires(OBlocks.PURPLE_DATURA.get()).unlockedBy("has_datura_purple", has(OBlocks.PURPLE_DATURA.get()));
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS,Items.WHITE_DYE).requires(OBlocks.WHITE_DATURA.get()).unlockedBy("has_datura_white", has(OBlocks.WHITE_DATURA.get()));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, OItems.THERMOMETER.get())
+                .pattern(" X ")
+                .pattern("XOX")
+                .pattern(" X ")
+                .define('X', OTags.Items.INGOTS_LEAD)
+                .define('O', Items.COMPASS)
+                .unlockedBy("has_lead_ingot", has(OItems.LEAD_INGOT.get()))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, OItems.SPEEDOMETER.get())
+                .pattern(" O ")
+                .pattern(" X ")
+                .define('X', OTags.Items.INGOTS_ELECTRUM)
+                .define('O', Items.COMPASS)
+                .unlockedBy("has_electrum_ingot", has(OItems.ELECTRUM_INGOT.get()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, OBlocks.SPOTTED_GLANCE.get())
                 .pattern(" X ")
                 .pattern("XOX")
@@ -100,6 +117,7 @@ public class ORecipes extends ORecipeProvider {
                 .define('O', OBlocks.GLANCE.get())
                 .unlockedBy("has_glance", has(OBlocks.GLANCE.get()))
                 .save(consumer);
+
 
         smithingElectrum(() -> Items.DIAMOND_SWORD, OItems.ELECTRUM_SWORD).save(consumer, Oreganized.modLoc("electrum_sword"));
         smithingElectrum(() -> Items.DIAMOND_SHOVEL, OItems.ELECTRUM_SHOVEL).save(consumer, Oreganized.modLoc("electrum_shovel"));

@@ -71,6 +71,9 @@ public class OBlockStates extends OBlockStateProvider {
         simpleBlock(OBlocks.GROOVED_BLUE_ICE);
 
         gargoyleBlock(OBlocks.GARGOYLE);
+
+        pottedPlant(OBlocks.POTTED_PURPLE_DATURA);
+        pottedPlant(OBlocks.POTTED_WHITE_DATURA);
     }
 
 }

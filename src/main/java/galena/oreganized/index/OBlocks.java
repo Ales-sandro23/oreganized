@@ -31,6 +31,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.IceBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -81,6 +83,11 @@ public class OBlocks {
             .strength(5.0F, 6.0F).sound(SoundType.METAL)));
 
     public static final RegistryObject<Block> GARGOYLE = register("gargoyle", () -> new GargoyleBlock(BlockBehaviour.Properties.copy(Blocks.STONE).noOcclusion()));
+
+    public static final RegistryObject<Block> WHITE_DATURA = register("datura", () -> new FlowerBlock(OEffects.STUNNING, 21, BlockBehaviour.Properties.copy(Blocks.OXEYE_DAISY)));
+    public static final RegistryObject<Block> PURPLE_DATURA = register("purple_datura", () -> new FlowerBlock(OEffects.STUNNING, 21, BlockBehaviour.Properties.copy(Blocks.ALLIUM)));
+    public static final RegistryObject<FlowerPotBlock> POTTED_WHITE_DATURA = HELPER.createBlockNoItem("potted_datura", () -> new FlowerPotBlock(WHITE_DATURA.get(), BlockBehaviour.Properties.copy(Blocks.POTTED_OXEYE_DAISY)));
+    public static final RegistryObject<FlowerPotBlock> POTTED_PURPLE_DATURA = HELPER.createBlockNoItem("potted_purple_datura", () -> new FlowerPotBlock(PURPLE_DATURA.get(), BlockBehaviour.Properties.copy(Blocks.POTTED_ALLIUM)));
 
     private static BlockBehaviour.Properties leadProperties() {
         return BlockBehaviour.Properties.of()

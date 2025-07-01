@@ -10,6 +10,7 @@ import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEntityTypes;
 import galena.oreganized.index.OItems;
 import galena.oreganized.world.IDoorProgressHolder;
+import galena.oreganized.world.IMotionHolder;
 import java.util.List;
 import java.util.function.Supplier;
 import net.minecraft.ChatFormatting;
@@ -22,6 +23,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.item.CrossbowItem;
@@ -60,6 +62,22 @@ public class OreganizedClient {
             }
         });
 
+        ItemProperties.register(OItems.SPEEDOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
+            if (entity == null) return 0;
+            var vehicle = entity.getRootVehicle();
+            if (!(vehicle instanceof IMotionHolder motionHolder)) return 0;
+            Oreganized.LOGGER.info(motionHolder.oreganised$getMotion());
+            return Mth.clamp(Math.round(motionHolder.oreganised$getMotion() * 100), 0, 16);
+        });
+
+        ItemProperties.register(OItems.THERMOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
+            if (entity == null) {
+                return 0;
+            } else {
+                return stack.getOrCreateTag().getInt("OreganizedHeat");
+            }
+        });
+
         ItemProperties.register(Items.CROSSBOW, new ResourceLocation(Oreganized.MOD_ID, "lead_bolt"), (stack, level, user, i) ->
                 CrossbowItem.isCharged(stack) && CrossbowItem.containsChargedProjectile(stack, OItems.LEAD_BOLT.get()) ? 1.0F : 0.0F
         );
@@ -77,7 +95,10 @@ public class OreganizedClient {
         render(OBlocks.LEAD_TRAPDOOR, cutout);
         render(OBlocks.LEAD_BARS, cutout);
         render(OBlocks.GARGOYLE, cutout);
-
+        render(OBlocks.WHITE_DATURA, cutout);
+        render(OBlocks.PURPLE_DATURA, cutout);
+        render(OBlocks.POTTED_WHITE_DATURA, cutout);
+        render(OBlocks.POTTED_PURPLE_DATURA, cutout);
         OBlocks.CRYSTAL_GLASS.forEach((c, b) -> render(b, translucent));
         OBlocks.CRYSTAL_GLASS_PANES.forEach((c, b) -> render(b, translucent));
 

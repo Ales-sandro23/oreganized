@@ -8,6 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
@@ -29,5 +30,8 @@ public class OBiomeTags extends BiomeTagsProvider {
                 .addTag(OTags.Biomes.RICH_IN_LEAD_ORE)
                 .addTag(Tags.Biomes.IS_PLAINS);
         tag(OTags.Biomes.RICH_IN_LEAD_ORE).addTag(BiomeTags.IS_SAVANNA);
+        tag(OTags.Biomes.HAS_DATURA)
+                .add(Biomes.PLAINS)
+                .addTags(BiomeTags.IS_SAVANNA);
     }
 }

@@ -24,6 +24,7 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CrossCollisionBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PipeBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -386,5 +387,12 @@ public abstract class OBlockStateProvider extends BlockStateProvider {
                 texture(name).withSuffix("_bottom"),
                 texture(name).withSuffix("_top")
         ));
+    }
+
+    public void pottedPlant(Supplier<? extends FlowerPotBlock> block) {
+        var name = name(block);
+        var model = models().withExistingParent(name, "block/flower_pot_cross")
+                .texture("plant", blockTexture(block.get().getContent()));
+        simpleBlock(block.get(), model);
     }
 }

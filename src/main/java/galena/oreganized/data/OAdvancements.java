@@ -57,6 +57,8 @@ public class OAdvancements extends ForgeAdvancementProvider {
                     .addCriterion("has_silver_mirror", InventoryChangeTrigger.TriggerInstance.hasItems(OItems.SILVER_MIRROR.get()))
                     .save(consumer, "oreganized:adventure/mirror_mirror");
 
+
+
             var likeTheRomans = Advancement.Builder.advancement()
                     .parent(getAdv("minecraft:story/upgrade_tools"))
                     .display(info(OItems.LEAD_INGOT.get(), "like_the_romans", FrameType.TASK,
@@ -86,7 +88,12 @@ public class OAdvancements extends ForgeAdvancementProvider {
                             OItems.ELECTRUM_HELMET.get(), OItems.ELECTRUM_CHESTPLATE.get(), OItems.ELECTRUM_LEGGINGS.get(), OItems.ELECTRUM_BOOTS.get()
                     ))
                     .save(consumer, "oreganized:story/electrum_gear");
-
+            Advancement.Builder.advancement()
+                    .parent(obtainSilver)
+                    .display(info(OItems.SPEEDOMETER.get(), "terminal_velocity", FrameType.TASK,
+                            "Got some fallin' To do", "Achieve Terminal Velocity by falling"))
+                    .addCriterion("terminal_velocity", OCriteriaTriggers.TERMINAL_VELOCITY.instance())
+                    .save(consumer, "oreganized:adventure/terminal_velocity");
             var meltingPoint = Advancement.Builder.advancement()
                     .parent(getAdv("minecraft:story/upgrade_tools"))
                     .display(info(OItems.MOLTEN_LEAD_BUCKET.get(), "melting_point", FrameType.TASK,

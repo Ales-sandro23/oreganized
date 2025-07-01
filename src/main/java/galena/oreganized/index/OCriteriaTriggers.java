@@ -9,6 +9,8 @@ import net.minecraftforge.fml.common.Mod;
 public class OCriteriaTriggers {
 
     public static final DummyCriterionTrigger SEE_GARGOYLE_GARGLE = CriteriaTriggers.register(new DummyCriterionTrigger(Oreganized.modLoc("see_gargoyle_gargle")));
+    public static final DummyCriterionTrigger TERMINAL_VELOCITY = CriteriaTriggers.register(new DummyCriterionTrigger(Oreganized.modLoc("terminal_velocity")));
+
     public static final DummyCriterionTrigger KNOCKED_BANNER_OFF = CriteriaTriggers.register(new DummyCriterionTrigger(Oreganized.modLoc("knocked_banner_off")));
     public static final DummyCriterionTrigger PROFOUND_BRAIN_DAMAGE = CriteriaTriggers.register(new DummyCriterionTrigger(Oreganized.modLoc("profound_brain_damage")));
     public static final DummyCriterionTrigger IN_LEAD_CLOUD = CriteriaTriggers.register(new DummyCriterionTrigger(Oreganized.modLoc("in_lead_cloud")));

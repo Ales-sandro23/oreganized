@@ -55,6 +55,8 @@ public class OItemTags extends ItemTagsProvider {
         tag(TOOLS_BUSH_HAMMER).add(OItems.BUSH_HAMMER.get());
 
 
+
+
         copy(OTags.Blocks.ORES_SILVER, ORES_SILVER);
         copy(OTags.Blocks.ORES_LEAD, ORES_LEAD);
 
@@ -73,7 +75,8 @@ public class OItemTags extends ItemTagsProvider {
         tag(ItemTags.MUSIC_DISCS).add(OItems.MUSIC_DISC_STRUCTURE.get());
         tag(ItemTags.TRIMMABLE_ARMOR).add(OItems.ELECTRUM_HELMET.get(), OItems.ELECTRUM_CHESTPLATE.get(), OItems.ELECTRUM_LEGGINGS.get(), OItems.ELECTRUM_BOOTS.get());
         tag(ItemTags.TRIM_MATERIALS).add(OItems.LEAD_INGOT.get(), OItems.SILVER_INGOT.get(), OItems.ELECTRUM_INGOT.get());
-
+        tag(ItemTags.SMALL_FLOWERS).add(OBlocks.WHITE_DATURA.get().asItem());
+        tag(ItemTags.SMALL_FLOWERS).add(OBlocks.PURPLE_DATURA.get().asItem());
         // Forge
         tag(Tags.Items.NUGGETS).addTags(NUGGETS_SILVER, NUGGETS_LEAD, NUGGETS_ELECTRUM, NUGGETS_NETHERITE);
         tag(Tags.Items.INGOTS).addTags(INGOTS_SILVER, INGOTS_LEAD, INGOTS_ELECTRUM);

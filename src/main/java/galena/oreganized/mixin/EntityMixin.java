@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityMixin implements IMotionHolder {
 
     @Unique
-    private double oreganized$Motion = 0.0;
+    private double oreganized$motion = 0.0;
+    @Unique
+    private double oreganized$HorizontalMotion = 0.0;
 
     @Inject(
             method = "setOldPosAndRot",
@@ -22,11 +24,18 @@ public class EntityMixin implements IMotionHolder {
         var self = (Entity) (Object) this;
         var deltaX = self.getX() - self.xOld;
         var deltaZ = self.getZ() - self.zOld;
-        oreganized$Motion = deltaX * deltaX + deltaZ * deltaZ;
+        var deltaY = self.getY() - self.yOld;
+        oreganized$HorizontalMotion = deltaX * deltaX + deltaZ * deltaZ;
+        oreganized$motion = oreganized$HorizontalMotion + deltaY * deltaY;
+    }
+
+    @Override
+    public double oreganised$getHorizontalMotion() {
+        return oreganized$HorizontalMotion;
     }
 
     @Override
     public double oreganised$getMotion() {
-        return oreganized$Motion;
+        return oreganized$motion;
     }
 }

@@ -25,6 +25,7 @@ import galena.oreganized.data.OItemModels;
 import galena.oreganized.data.OItemTags;
 import galena.oreganized.data.OLang;
 import galena.oreganized.data.OLootTables;
+import galena.oreganized.data.OPaintingVariantTags;
 import galena.oreganized.data.ORecipes;
 import galena.oreganized.data.ORegistries;
 import galena.oreganized.data.OSoundDefinitions;
@@ -274,6 +275,7 @@ public class Oreganized {
         generator.addProvider(server, datapackProvider);
         generator.addProvider(server, new OBiomeTags(output, lookupProvider, helper));
         generator.addProvider(server, new ODamageTags(output, lookupProvider, helper));
+        generator.addProvider(server, new OPaintingVariantTags(output, lookupProvider, helper));
         //generator.addProvider(server, new OPaintingVariantTags(output, lookupProvider, helper));
         //generator.addProvider(server, new OBiomeModifier.register(event));
 
@@ -347,6 +349,8 @@ public class Oreganized {
         putAfter(entries, OItems.ELECTRUM_AXE.get(), OItems.ELECTRUM_HOE);
         putBefore(entries, Items.MILK_BUCKET, OItems.MOLTEN_LEAD_BUCKET);
         putBefore(entries, Items.SPYGLASS, OItems.SILVER_MIRROR);
+        putBefore(entries, OItems.SILVER_MIRROR.get(), OItems.THERMOMETER);
+        putBefore(entries, OItems.THERMOMETER.get(), OItems.SPEEDOMETER);
         putAfter(entries, Items.TNT_MINECART, OItems.SHRAPNEL_BOMB_MINECART);
         putBefore(entries, Items.MUSIC_DISC_5, OItems.MUSIC_DISC_STRUCTURE);
         putAfter(entries, Items.SHEARS, OItems.SCRIBE);
@@ -369,6 +373,9 @@ public class Oreganized {
         putAfter(entries, Items.GOLD_INGOT, OItems.SILVER_INGOT);
         putBefore(entries, Items.NETHERITE_SCRAP, OItems.ELECTRUM_INGOT);
         putBefore(entries, Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE, OItems.ELECTRUM_UPGRADE_SMITHING_TEMPLATE);
+
+        putAfter(entries, Items.LILY_OF_THE_VALLEY, OBlocks.PURPLE_DATURA);
+        putAfter(entries, OBlocks.PURPLE_DATURA.get(), OBlocks.WHITE_DATURA);
 
         if (ModList.get().isLoaded(FARMERS_DELIGHT_ID)) {
             putAfter(entries, ModItems.NETHERITE_KNIFE.get(), OItems.ELECTRUM_KNIFE);

@@ -6,7 +6,12 @@ import static galena.oreganized.ModCompat.SHIELD_EXPANSION_ID;
 
 import galena.oreganized.Oreganized;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.*;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
@@ -129,6 +134,7 @@ public class OTags {
 
         public static final TagKey<Biome> HAS_BOULDER = tag("has_structure/boulder");
         public static final TagKey<Biome> RICH_IN_LEAD_ORE = tag("rich_in_lead_ore");
+        public static final TagKey<Biome> HAS_DATURA = tag("has_feature/datura");
 
         private static TagKey<Biome> tag(String name) {
             return BiomeTags.create(Oreganized.modLoc(name).toString());

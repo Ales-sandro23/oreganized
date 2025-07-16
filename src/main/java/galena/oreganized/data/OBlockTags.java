@@ -4,7 +4,9 @@ import static galena.oreganized.index.OTags.Blocks.BLOWS_LEAD_CLOUD;
 import static galena.oreganized.index.OTags.Blocks.CREATES_LEAD_CLOUD;
 import static galena.oreganized.index.OTags.Blocks.CRYSTAL_GLASS;
 import static galena.oreganized.index.OTags.Blocks.CRYSTAL_GLASS_PANES;
+import static galena.oreganized.index.OTags.Blocks.FIRE_HEAT_LEVEL;
 import static galena.oreganized.index.OTags.Blocks.FIRE_SOURCE;
+import static galena.oreganized.index.OTags.Blocks.LAVA_HEAT_LEVEL;
 import static galena.oreganized.index.OTags.Blocks.MELTS_LEAD;
 import static galena.oreganized.index.OTags.Blocks.MINEABLE_WITH_SCRIBE;
 import static galena.oreganized.index.OTags.Blocks.ORES_LEAD;
@@ -247,5 +249,15 @@ public class OBlockTags extends IntrinsicHolderTagsProvider<Block> {
         tag(BLOWS_LEAD_CLOUD)
                 .addTags(CREATES_LEAD_CLOUD);
 
+        tag(FIRE_HEAT_LEVEL)
+                .addTags(BlockTags.FIRE)
+                .addTags(BlockTags.CAMPFIRES);
+
+        tag(LAVA_HEAT_LEVEL)
+                .add(Blocks.MAGMA_BLOCK)
+                .add(Blocks.LAVA)
+                .add(OBlocks.MOLTEN_LEAD.get())
+                .add(Blocks.LAVA_CAULDRON)
+                .add(OBlocks.MOLTEN_LEAD_CAULDRON.get());
     }
 }

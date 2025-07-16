@@ -99,6 +99,9 @@ public class OTags {
         public static final TagKey<Block> BLOWS_LEAD_CLOUD = tag("blows_lead_cloud");
         public static final TagKey<Block> CREATES_LEAD_CLOUD = tag("creates_lead_cloud");
 
+        public static final TagKey<Block> FIRE_HEAT_LEVEL = tag("heat_level/fire");
+        public static final TagKey<Block> LAVA_HEAT_LEVEL = tag("heat_level/lava");
+
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(Oreganized.modLoc(name));
         }

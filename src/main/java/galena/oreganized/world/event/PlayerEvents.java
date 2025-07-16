@@ -4,6 +4,7 @@ import galena.oreganized.Oreganized;
 import galena.oreganized.content.block.MoltenLeadCauldronBlock;
 import galena.oreganized.content.entity.GargoyleBlockEntity;
 import galena.oreganized.content.item.ScribeItem;
+import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.index.OAttributes;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OItems;
@@ -113,6 +114,13 @@ public class PlayerEvents {
             } else {
                 data.remove(GargoyleBlockEntity.GROWL_COOLDOWN_TAG);
             }
+        }
+
+        var stack = event.player.getItemInHand(InteractionHand.MAIN_HAND);
+
+        if (stack.is(OItems.THERMOMETER.get()) && !ThermometerItem.isLocked(stack)) {
+            var heatLevel = ThermometerItem.ambientMeasurement(event.player.level(), event.player.blockPosition());
+            ThermometerItem.setHeatLevel(stack, event.player.level(), heatLevel);
         }
     }
 

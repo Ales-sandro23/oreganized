@@ -1,6 +1,7 @@
 package galena.oreganized.data;
 
 import galena.oreganized.Oreganized;
+import galena.oreganized.client.tooltips.ClientThermometerTooltip;
 import galena.oreganized.data.provider.OLangProvider;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEffects;
@@ -62,15 +63,14 @@ public class OLang extends OLangProvider {
         addSubtitle("entity", "bolt_hit", "Bolt hits");
         addSubtitle("block", "gargoyle.growl", "Gargoyle growls");
         add("tooltip.oreganized.speed", "Speed: %s");
-        add("tooltip.oreganized.heat1", "Cold");
-        add("tooltip.oreganized.heat2", "Normal");
-        add("tooltip.oreganized.heat3", "Fine");
-        add("tooltip.oreganized.heat4", "Warm");
-        add("tooltip.oreganized.heat5", "Hot");
-        add("tooltip.oreganized.heat6", "Hotter");
-        add("tooltip.oreganized.heat8", "Searing");
-        add("tooltip.oreganized.heat7", "Scalding");
-        add("tooltip.oreganized.heat9", "Scorching");
+        add(ClientThermometerTooltip.getDescriptionId(0), "Cold");
+        add(ClientThermometerTooltip.getDescriptionId(1), "Fine");
+        add(ClientThermometerTooltip.getDescriptionId(2), "Warm");
+        add(ClientThermometerTooltip.getDescriptionId(3), "Hot");
+        add(ClientThermometerTooltip.getDescriptionId(4), "Sweltering");
+        add(ClientThermometerTooltip.getDescriptionId(5), "Searing");
+        add(ClientThermometerTooltip.getDescriptionId(6), "Scalding");
+        add(ClientThermometerTooltip.getDescriptionId(7), "Scorching");
         add("tooltip.oreganized.wip.title", "Work In Progress");
         add("tooltip.oreganized.wip.description", "Usages for this item will be available in a future release");
 
@@ -83,7 +83,7 @@ public class OLang extends OLangProvider {
         add("attribute.oreganized.kinetic_damage", "Kinetic Damage");
 
         add("item.oreganized.flint_and_pewter", "Flint and Pewter");
-        
+
         addPainting(OPaintingVariants.VINDICATING_BAD, "Vidicating Bad", "Xaidee");
 
         /*

@@ -79,10 +79,10 @@ public abstract class GuiMixin implements GuiThermometerAccessor {
         }
 
         if (this.toolHighlightTimer > 0 && this.lastToolHighlight.getItem() == OItems.THERMOMETER.get()) {
-            float heatF = this.lastToolHighlight.getTag().getInt("OreganizedHeat") / 8f;
-            var heat = Component.empty().append(ClientThermometerTooltip.TEXT[this.lastToolHighlight.getTag().getInt("OreganizedHeat")]).withStyle((style) -> {
-                return style.withColor(new Color(0.5f + heatF / 2, 1 - heatF / 2, 1 - heatF / 2).getRGB());
-            });
+            var heatLevel = this.lastToolHighlight.getOrCreateTag().getInt("OreganizedHeat");
+            var heat = Component.translatable(ClientThermometerTooltip.getDescriptionId(heatLevel)).withStyle((style) -> {
+                return style.withColor(ClientThermometerTooltip.getColor(heatLevel));
+            }).append(" " + heatLevel);
 
             if (this.lastToolHighlight.hasCustomHoverName()) {
                 heat.withStyle(ChatFormatting.ITALIC);

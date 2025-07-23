@@ -154,6 +154,13 @@ public class OAdvancements extends ForgeAdvancementProvider {
                             "Well... That leads to dust", "Mine lead ore without adjacent water to block the toxic dust cloud from forming"))
                     .addCriterion("in_lead_cloud", OCriteriaTriggers.IN_LEAD_CLOUD.instance())
                     .save(consumer, "oreganized:story/lead_to_dust");
+
+            Advancement.Builder.advancement()
+                    .parent(getAdv("husbandry/root"))
+                    .display(info(OItems.THERMOMETER.get(), "thermal_shock", FrameType.TASK,
+                            "Thermal Shock", "Cool your Thermometer too quickly in water, destroying it"))
+                    .addCriterion("broken_thermometer", OCriteriaTriggers.BROKEN_THERMOMETER.instance())
+                    .save(consumer, "oreganized:husbandry/thermal_shock");
         }
 
         protected Advancement getAdv(String loc) {

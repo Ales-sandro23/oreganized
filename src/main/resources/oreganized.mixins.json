@@ -18,7 +18,6 @@
     "MobMixin",
     "PillagerMixin",
     "PlayerMixin",
-    "client.ClientTooltipComponentMixin",
     "compat.AirCurrentMixin",
     "compat.BellowBlockTileMixin",
     "compat.LogStrippingFakeRecipesMixin"

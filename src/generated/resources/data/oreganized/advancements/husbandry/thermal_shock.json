@@ -1,0 +1,30 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "criteria": {
+    "broken_thermometer": {
+      "conditions": {},
+      "trigger": "oreganized:broken_thermometer"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.oreganized.thermal_shock.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "oreganized:thermometer"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.oreganized.thermal_shock.title"
+    }
+  },
+  "requirements": [
+    [
+      "broken_thermometer"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

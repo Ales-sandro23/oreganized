@@ -2,6 +2,8 @@ package galena.oreganized.data;
 
 import galena.oreganized.Oreganized;
 import galena.oreganized.content.block.IMeltableBlock;
+import galena.oreganized.content.block.SpottedGlanceBlock;
+import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.data.provider.OBlockLootProvider;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEntityTypes;
@@ -9,6 +11,7 @@ import galena.oreganized.index.OItems;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,6 +20,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
@@ -42,7 +46,8 @@ public class OLootTables extends LootTableProvider {
     public OLootTables(PackOutput output) {
         super(output, Set.of(), List.of(
                 new SubProviderEntry(BlockLoot::new, LootContextParamSets.BLOCK),
-                new SubProviderEntry(EntityLoot::new, LootContextParamSets.ENTITY)
+                new SubProviderEntry(EntityLoot::new, LootContextParamSets.ENTITY),
+                new SubProviderEntry(OGameplayLoot::new, LootContextParamSets.GIFT)
         ));
     }
 
@@ -162,4 +167,30 @@ public class OLootTables extends LootTableProvider {
             return OEntityTypes.ENTITIES.getEntries().stream().map(Supplier::get);
         }
     }
+
+    public static class OGameplayLoot implements LootTableSubProvider {
+
+        @Override
+        public void generate(BiConsumer<ResourceLocation, LootTable.Builder> consumer) {
+            consumer.accept(
+                    ThermometerItem.BREAK_LOOT_TABLE,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .add(LootItem.lootTableItem(OItems.LEAD_NUGGET.get()))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1F, 4F)))
+                            )
+            );
+
+            consumer.accept(
+                    SpottedGlanceBlock.WASH_LOOT_TABLE,
+                    LootTable.lootTable()
+                            .withPool(LootPool.lootPool()
+                                    .add(LootItem.lootTableItem(OItems.LEAD_NUGGET.get()))
+                                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(1F, 2F)))
+                            )
+            );
+        }
+
+    }
+
 }

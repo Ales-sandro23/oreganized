@@ -1,14 +1,26 @@
 package galena.oreganized.content.item;
 
+import galena.oreganized.Oreganized;
 import galena.oreganized.client.accessors.GuiThermometerAccessor;
 import galena.oreganized.client.tooltips.ThermometerTooltip;
 import galena.oreganized.content.block.IMeltableBlock;
+import galena.oreganized.index.OCriteriaTriggers;
+import galena.oreganized.index.OItems;
 import galena.oreganized.index.OTags;
-import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,24 +28,38 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
+@EventBusSubscriber(modid = Oreganized.MOD_ID)
 public class ThermometerItem extends Item {
 
+    public static final ResourceLocation BREAK_LOOT_TABLE = Oreganized.modLoc("gameplay/thermometer_breaking");
     private static final int AMBIENT_RANGE = 5;
     public static final int HEAT_LEVELS = 8;
 
-    public ThermometerItem(Properties pProperties) {
-        super(pProperties);
+    public ThermometerItem(Properties properties) {
+        super(properties);
     }
 
     @Override
     public @NotNull Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
-        int heat = stack.getOrCreateTag().getInt("OreganizedHeat");
+        int heat = getHeatLevel(stack);
         return Optional.of(new ThermometerTooltip(heat));
     }
 
@@ -46,16 +72,22 @@ public class ThermometerItem extends Item {
             if (goopyness > 1) return 6;
             if (goopyness > 0) return 4;
         }
-        return 0;
+        return 1;
     }
 
-    public static int ambientMeasurement(Level level, BlockPos pos) {
+    public static int ambientMeasurement(Player player) {
+        var level = player.level();
+        var pos = player.blockPosition();
+
+        if (player.getFeetBlockState().is(OTags.Blocks.LAVA_HEAT_LEVEL)) return 7;
+        if (player.getFeetBlockState().is(OTags.Blocks.FIRE_HEAT_LEVEL)) return 6;
+        if (player.isOnFire()) return 4;
+        if (player.isFreezing()) return 0;
+
         var biome = level.getBiome(pos).value();
         var temperature = biome.getBaseTemperature();
 
-        var biomeHeatLevel = (int) (Math.max(0, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 1));
-
-        return biomeHeatLevel;
+        return (int) (Math.max(0, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 1));
     }
 
     public static int activeMeasurement(Level level, BlockPos pos) {
@@ -78,35 +110,88 @@ public class ThermometerItem extends Item {
     }
 
     private static int heatLevel(LivingEntity entity) {
-        if(entity.getType() == EntityType.MAGMA_CUBE) return 7;
-        if(entity.getType() == EntityType.BLAZE) return 6;
-        if(entity.isOnFire()) return 4;
+        if (entity.getType() == EntityType.MAGMA_CUBE) return 7;
+        if (entity.getType() == EntityType.BLAZE) return 6;
+        if (entity.isOnFire()) return 4;
 
         if (entity.isInvertedHealAndHarm()) return 0;
 
-        if(entity.getActiveEffects().stream().anyMatch(it -> !it.getEffect().isBeneficial())) return 3;
+        if (entity.getActiveEffects().stream().anyMatch(it -> !it.getEffect().isBeneficial())) return 3;
 
         return 2;
     }
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+        var held = player.getItemInHand(hand);
         var heatLevel = heatLevel(target);
-        setHeatLevel(stack, player.level(), heatLevel);
+        setHeatLevel(held, player.level(), heatLevel);
+        player.getCooldowns().addCooldown(held.getItem(), 60);
+        setLocked(player, held, true);
+        return InteractionResult.sidedSuccess(player.level().isClientSide());
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        var hit = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+
+        if (hit.getType() != HitResult.Type.BLOCK) return super.use(level, player, hand);
+
+        var pos = hit.getBlockPos();
+        var state = level.getBlockState(pos);
+        var stack = player.getItemInHand(hand);
+
+        if (state.getFluidState().is(FluidTags.WATER)) {
+            var result = extinguish(player, stack, hit.getLocation());
+            if (result.getResult() != InteractionResult.PASS) return result;
+        }
+
+        var heatLevel = activeMeasurement(level, pos);
+        setHeatLevel(stack, level, heatLevel);
         player.getCooldowns().addCooldown(stack.getItem(), 60);
-        setLocked(stack, true);
-        return super.interactLivingEntity(stack, player, target, hand);
+        setLocked(player, stack, true);
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
+    }
+
+    private static InteractionResultHolder<ItemStack> extinguish(Player player, ItemStack stack, Vec3 pos) {
+        var heatLevel = getHeatLevel(stack);
+        if (heatLevel < 4) return InteractionResultHolder.pass(stack);
+        player.playSound(SoundEvents.FIRE_EXTINGUISH, 1F, 0.9F);
+        player.level().addParticle(ParticleTypes.CLOUD, pos.x(), pos.y(), pos.z(), 0.0, 0.05, 0.0);
+
+        if (heatLevel > 6) {
+            stack.shrink(1);
+            if (player.level() instanceof ServerLevel level) {
+                var lootTable = level.getServer().getLootData().getLootTable(BREAK_LOOT_TABLE);
+                var lootParams = new LootParams.Builder(level)
+                        .withParameter(LootContextParams.ORIGIN, pos)
+                        .withParameter(LootContextParams.THIS_ENTITY, player)
+                        .withParameter(LootContextParams.TOOL, stack)
+                        .create(LootContextParamSets.GIFT);
+
+                var drops = lootTable.getRandomItems(lootParams);
+                drops.forEach(drop -> {
+                    if (player.addItem(drop)) return;
+                    Containers.dropItemStack(level, pos.x(), pos.y(), pos.z(), drop);
+                });
+
+                OCriteriaTriggers.BROKEN_THERMOMETER.trigger((ServerPlayer) player);
+            }
+        } else {
+            setLocked(player, stack, false);
+        }
+
+        return InteractionResultHolder.sidedSuccess(stack, player.level().isClientSide());
     }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        var heatLevel = activeMeasurement(context.getLevel(), context.getClickedPos());
-        setHeatLevel(context.getItemInHand(), context.getLevel(), heatLevel);
-        if (context.getPlayer() != null) {
-            context.getPlayer().getCooldowns().addCooldown(context.getItemInHand().getItem(), 60);
-        }
-        setLocked(context.getItemInHand(), true);
-        return InteractionResult.SUCCESS;
+        return InteractionResult.PASS;
+    }
+
+    public static int getHeatLevel(ItemStack stack) {
+        if (!stack.hasTag()) return 0;
+        return stack.getTag().getInt("OreganizedHeat");
     }
 
     public static void setHeatLevel(ItemStack stack, Level level, int heatLevel) {
@@ -125,54 +210,21 @@ public class ThermometerItem extends Item {
                 .isPresent();
     }
 
-    private static void setLocked(ItemStack stack, boolean locked) {
-        stack.getOrCreateTag().putBoolean("Locked", locked);
+    private static void setLocked(@Nullable Entity user, ItemStack stack, boolean locked) {
+        var tag = stack.getOrCreateTag();
+        if (tag.getBoolean("Locked") == locked) return;
+        tag.putBoolean("Locked", locked);
+        var sound = locked ? SoundEvents.LODESTONE_COMPASS_LOCK : SoundEvents.AMETHYST_BLOCK_RESONATE;
+        if (user != null) {
+            user.level().playSound(user, user.blockPosition(), sound, SoundSource.PLAYERS, 1.0F, 1.2F);
+        }
     }
 
-    /*
-    public InteractionResult useOnOld(UseOnContext context) {
-        Level world = context.getLevel();
-        BlockPos pos = context.getClickedPos();
-        Player player = context.getPlayer();
-        BlockState state = world.getBlockState(pos);
-        ItemStack item = context.getItemInHand();
-        if (player.getCooldowns().isOnCooldown(OItems.THERMOMETER.get())) {
-            return InteractionResult.FAIL;
-        }
-        player.getCooldowns().addCooldown(OItems.THERMOMETER.get(), 60);
-        float sumheat = 0;
-        for (int x = -5; x <= 5; x++) {
-            for (int z = -5; z <= 5; z++) {
-                for (int y = -5; y <= 5; y++) {
-                    BlockPos posNew = pos.offset(x, y, z);
-                    BlockState stateAt = world.getBlockState(posNew);
-                    float heat = 0;
-                    if (HEATVALUE.get(stateAt.getBlock()) != null) {
-                        heat = HEATVALUE.get(stateAt.getBlock());
-                        heat *= (float) Math.pow(8.5 / (new Vec3(x, y, z).length() + 1), 0.3);
-                        sumheat = Math.max(heat * heat, sumheat);
-                    } else if (stateAt.getBlock().getLightEmission(stateAt, world, posNew) > 0) {
-                        sumheat = Math.max(stateAt.getBlock().getLightEmission(stateAt, world, posNew) / 5f, sumheat);
-                    }
-                }
-            }
-        }
-
-
-        int sumheatInt = Mth.clamp((int) Math.pow(sumheat, 0.5), 0, 8);
-
-        CompoundTag nbt = item.getOrCreateTag();
-        nbt.putInt("OreganizedHeat", sumheatInt);
-        if (world.isClientSide() && context.getHand() == InteractionHand.MAIN_HAND
-        ) {
-            if (Minecraft.getInstance().gui instanceof GuiThermometerAccessor accessor) {
-                accessor.oreganized$setToolHighlightTimer(60);
-            }
-        }
-        return InteractionResult.SUCCESS;
-
-
+    @SubscribeEvent
+    public static void onHitAir(PlayerInteractEvent.LeftClickEmpty event) {
+        var stack = event.getItemStack();
+        if (!stack.is(OItems.THERMOMETER.get())) return;
+        setLocked(event.getEntity(), stack, false);
     }
-     */
 
 }

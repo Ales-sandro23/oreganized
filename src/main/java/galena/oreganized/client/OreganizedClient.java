@@ -6,7 +6,10 @@ import galena.oreganized.client.render.entity.LeadBoltRender;
 import galena.oreganized.client.render.entity.ShrapnelBombMinecartRender;
 import galena.oreganized.client.render.entity.ShrapnelBombRender;
 import galena.oreganized.client.render.gui.StunningOverlay;
+import galena.oreganized.client.tooltips.ClientThermometerTooltip;
+import galena.oreganized.client.tooltips.ThermometerTooltip;
 import galena.oreganized.content.item.DeviceItem;
+import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEntityTypes;
 import galena.oreganized.index.OItems;
@@ -32,6 +35,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -71,11 +75,7 @@ public class OreganizedClient {
         });
 
         ItemProperties.register(OItems.THERMOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
-            if (entity == null) {
-                return 0;
-            } else {
-                return stack.getOrCreateTag().getInt("OreganizedHeat");
-            }
+            return ThermometerItem.getHeatLevel(stack);
         });
 
         ItemProperties.register(Items.CROSSBOW, new ResourceLocation(Oreganized.MOD_ID, "lead_bolt"), (stack, level, user, i) ->
@@ -123,6 +123,11 @@ public class OreganizedClient {
     public static void renderThirdPersonArm(ModelPart arm, boolean rightArm) {
         arm.xRot = -1.7F;
         arm.yRot = rightArm ? -0.1F : 0.2F;
+    }
+
+    @SubscribeEvent
+    public static void registerClientTooltips(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(ThermometerTooltip.class, ClientThermometerTooltip::new);
     }
 
     @Mod.EventBusSubscriber(modid = Oreganized.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)

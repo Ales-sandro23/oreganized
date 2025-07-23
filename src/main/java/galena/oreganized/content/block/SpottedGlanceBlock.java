@@ -1,5 +1,6 @@
 package galena.oreganized.content.block;
 
+import galena.oreganized.Oreganized;
 import galena.oreganized.index.OBlocks;
 import javax.annotation.ParametersAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -23,6 +24,8 @@ import net.minecraft.world.phys.Vec3;
 @MethodsReturnNonnullByDefault
 public class SpottedGlanceBlock extends Block {
 
+    public static final ResourceLocation WASH_LOOT_TABLE = Oreganized.modLoc("gameplay/spotted_glance");
+
     public SpottedGlanceBlock(Properties properties) {
         super(properties);
     }
@@ -36,17 +39,21 @@ public class SpottedGlanceBlock extends Block {
         return OBlocks.GLANCE.get().defaultBlockState();
     }
 
-    private void dropLeadNuggets(LevelAccessor world, BlockPos pos) {
-        if (world instanceof ServerLevel) {
-            LootTable lootTable = world.getServer().getLootData().getLootTable(new ResourceLocation("oreganized", "gameplay/spotted_glance"));
+    private void dropLeadNuggets(LevelAccessor level, BlockPos pos) {
+        if (level instanceof ServerLevel) {
+            LootTable lootTable = level.getServer().getLootData().getLootTable(WASH_LOOT_TABLE);
 
-            LootParams.Builder builder = new LootParams.Builder((ServerLevel) world)
-                    .withLuck(((ServerLevel) world).random.nextFloat())
-                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos));
+            LootParams params = new LootParams.Builder((ServerLevel) level)
+                    .withLuck(((ServerLevel) level).random.nextFloat())
+                    .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
+                    .withParameter(LootContextParams.BLOCK_STATE, level.getBlockState(pos))
+                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                    .create(LootContextParamSets.BLOCK);
 
-            var l = lootTable.getRandomItems(builder.create(LootContextParamSets.COMMAND));
-            ItemStack leadNuggets = l.iterator().next();
-            Containers.dropItemStack((Level) world, pos.getX(), pos.getY(), pos.getZ(), leadNuggets);
+            var drops = lootTable.getRandomItems(params);
+            drops.forEach(drop -> {
+                Containers.dropItemStack((Level) level, pos.getX(), pos.getY(), pos.getZ(), drop);
+            });
         }
     }
 }

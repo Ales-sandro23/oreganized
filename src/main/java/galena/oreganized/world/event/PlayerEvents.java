@@ -118,8 +118,9 @@ public class PlayerEvents {
 
         var stack = event.player.getItemInHand(InteractionHand.MAIN_HAND);
 
+        if (event.player.level().getGameTime() % 20L != 0) return;
         if (stack.is(OItems.THERMOMETER.get()) && !ThermometerItem.isLocked(stack)) {
-            var heatLevel = ThermometerItem.ambientMeasurement(event.player.level(), event.player.blockPosition());
+            var heatLevel = ThermometerItem.ambientMeasurement(event.player);
             ThermometerItem.setHeatLevel(stack, event.player.level(), heatLevel);
         }
     }

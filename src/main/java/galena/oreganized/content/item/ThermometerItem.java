@@ -1,12 +1,13 @@
 package galena.oreganized.content.item;
 
 import galena.oreganized.Oreganized;
-import galena.oreganized.client.accessors.GuiThermometerAccessor;
+import galena.oreganized.client.accessors.GuiAccessor;
 import galena.oreganized.client.tooltips.ThermometerTooltip;
 import galena.oreganized.content.block.IMeltableBlock;
 import galena.oreganized.index.OCriteriaTriggers;
 import galena.oreganized.index.OItems;
 import galena.oreganized.index.OTags;
+import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -43,8 +44,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 @EventBusSubscriber(modid = Oreganized.MOD_ID)
 public class ThermometerItem extends Item {
@@ -87,7 +86,7 @@ public class ThermometerItem extends Item {
         var biome = level.getBiome(pos).value();
         var temperature = biome.getBaseTemperature();
 
-        return (int) (Math.max(0, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 1));
+        return (int) (Math.max(0, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 4));
     }
 
     public static int activeMeasurement(Level level, BlockPos pos) {
@@ -191,14 +190,15 @@ public class ThermometerItem extends Item {
 
     public static int getHeatLevel(ItemStack stack) {
         if (!stack.hasTag()) return 0;
-        return stack.getTag().getInt("OreganizedHeat");
+        return stack.getOrCreateTag().getInt("OreganizedHeat");
     }
 
     public static void setHeatLevel(ItemStack stack, Level level, int heatLevel) {
+        if (getHeatLevel(stack) == heatLevel) return;
         var nbt = stack.getOrCreateTag();
         nbt.putInt("OreganizedHeat", heatLevel);
         if (level.isClientSide()) {
-            if (Minecraft.getInstance().gui instanceof GuiThermometerAccessor accessor) {
+            if (Minecraft.getInstance().gui instanceof GuiAccessor accessor) {
                 accessor.oreganized$setToolHighlightTimer(60);
             }
         }

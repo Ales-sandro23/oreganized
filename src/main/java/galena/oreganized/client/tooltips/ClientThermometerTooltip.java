@@ -30,25 +30,25 @@ public class ClientThermometerTooltip implements ClientTooltipComponent {
         return 14;
     }
 
-    public void renderImage(Font pFont, int pX, int pY, GuiGraphics pGuiGraphics) {
+    public void renderImage(Font font, int x, int y, GuiGraphics graphics) {
         int i = 0;
         int offset = 0;
         long time = Minecraft.getInstance().level.getGameTime();
         double delta = Minecraft.getInstance().getDeltaFrameTime();
         var text = I18n.get(getDescriptionId(heat));
         for (char a : text.toCharArray()) {
-            pGuiGraphics.pose().pushPose();
-            pGuiGraphics.pose().translate(0, (Math.sin(i * 1.2 + (time + delta) / 24 * heat) * heat / 3), 0);
-            pGuiGraphics.drawString(pFont, Character.toString(a), pX + offset, pY, getColor(heat), true);
+            graphics.pose().pushPose();
+            graphics.pose().translate(0, (Math.sin(i * 1.2 + (time + delta) / 24 * heat) * heat / 3), 0);
+            graphics.drawString(font, Character.toString(a), x + offset, y, getColor(heat), true);
             i += 1;
-            offset += pFont.width(Character.toString(a));
-            pGuiGraphics.pose().popPose();
+            offset += font.width(Character.toString(a));
+            graphics.pose().popPose();
         }
 
     }
 
     @Override
-    public int getWidth(Font pFont) {
+    public int getWidth(Font font) {
         return 20;
     }
 }

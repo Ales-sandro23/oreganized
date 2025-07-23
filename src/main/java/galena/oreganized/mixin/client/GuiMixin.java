@@ -3,14 +3,14 @@ package galena.oreganized.mixin.client;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import galena.oreganized.client.accessors.GuiThermometerAccessor;
+import galena.oreganized.client.accessors.GuiAccessor;
 import galena.oreganized.client.render.gui.OGui;
 import galena.oreganized.client.tooltips.ClientThermometerTooltip;
+import galena.oreganized.content.item.DeviceItem;
+import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.index.OEffects;
 import galena.oreganized.index.OItems;
 import galena.oreganized.world.IMotionHolder;
-import java.awt.*;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
@@ -18,17 +18,14 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Slice;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
-public abstract class GuiMixin implements GuiThermometerAccessor {
+public abstract class GuiMixin implements GuiAccessor {
 
     @Shadow
     protected int toolHighlightTimer;
@@ -67,92 +64,47 @@ public abstract class GuiMixin implements GuiThermometerAccessor {
     }
 
     @Override
-    public void oreganized$setToolHighlightTimer(int toolHighlightTimer) {
-        this.toolHighlightTimer = toolHighlightTimer;
+    public void oreganized$setToolHighlightTimer(int value) {
+        this.toolHighlightTimer = value;
     }
 
-    @Inject(method = "renderSelectedItemName(Lnet/minecraft/client/gui/GuiGraphics;I)V", remap = false, at = @At("HEAD"))
-    public void renderTooltips(GuiGraphics graphics, int yShift, CallbackInfo ci) {
-
-        if (ci.isCancelled()) {
-            return;
-        }
-
-        if (this.toolHighlightTimer > 0 && this.lastToolHighlight.getItem() == OItems.THERMOMETER.get()) {
-            var heatLevel = this.lastToolHighlight.getOrCreateTag().getInt("OreganizedHeat");
-            var heat = Component.translatable(ClientThermometerTooltip.getDescriptionId(heatLevel))
+    @WrapOperation(
+            method = "renderSelectedItemName(Lnet/minecraft/client/gui/GuiGraphics;I)V",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;drawString(Lnet/minecraft/client/gui/Font;Lnet/minecraft/network/chat/Component;III)I")
+    )
+    public int renderTooltips(GuiGraphics graphics, Font font, Component text, int centeredX, int y, int color, Operation<Integer> original, @Local(ordinal = 4) int opacity) {
+        if (lastToolHighlight.is(OItems.THERMOMETER.get())) {
+            var heatLevel = ThermometerItem.getHeatLevel(lastToolHighlight);
+            var tooltip = Component.translatable(ClientThermometerTooltip.getDescriptionId(heatLevel))
                     .withStyle(style -> style.withColor(ClientThermometerTooltip.getColor(heatLevel)));
 
-            if (this.lastToolHighlight.hasCustomHoverName()) {
-                heat.withStyle(ChatFormatting.ITALIC);
-            }
-
-            var highlightTip = this.lastToolHighlight.getHighlightTip(heat);
-            int i = this.getFont().width(highlightTip);
-            int j = (this.screenWidth - i) / 2;
-            int k = this.screenHeight - Math.max(yShift, 59) - 12;
-            if (!this.minecraft.gameMode.canHurtPlayer()) {
-                k += 14;
-            }
-
-            int l = (int) ((float) this.toolHighlightTimer * 256.0F / 10.0F);
-            if (l > 255) {
-                l = 255;
-            }
-
-            if (l > 0) {
-                graphics.fill(j - 2, k - 2, j + i + 2, k + 9 + 2, this.minecraft.options.getBackgroundColor(0));
-                Font font = IClientItemExtensions.of(this.lastToolHighlight).getFont(this.lastToolHighlight, IClientItemExtensions.FontContext.SELECTED_ITEM_NAME);
-                if (font == null) {
-                    graphics.drawString(this.getFont(), highlightTip, j, k, 16777215 + (l << 24));
-                } else {
-                    j = (this.screenWidth - font.width(highlightTip)) / 2;
-                    graphics.drawString(font, highlightTip, j, k, 16777215 + (l << 24));
-                }
-            }
+            var x = (screenWidth - font.width(tooltip)) / 2;
+            graphics.drawString(font, tooltip, x, y - 12, color);
         }
 
-        if (this.toolHighlightTimer > 0 && this.lastToolHighlight.getItem() == OItems.SPEEDOMETER.get()) {
+        if (lastToolHighlight.is(OItems.SPEEDOMETER.get()) && Minecraft.getInstance().player.getRootVehicle() instanceof IMotionHolder motionHolder) {
             long time = Minecraft.getInstance().level.getGameTime();
-            var vehicle = (IMotionHolder) Minecraft.getInstance().player.getRootVehicle();
-            double speed = vehicle.oreganised$getMotion();
+            double speed = motionHolder.oreganised$getMotion();
             var formattedSpeed = String.format("%.2f", speed);
-            var tooltip = Component.empty().append(Component.translatable("tooltip.oreganized.speed", formattedSpeed)).withStyle((style) -> {
-                return style.withColor(new Color(1f, 1, 0.9f).getRGB());
-            });
-            var arrow = Component.empty().append("->").withStyle((style) -> {
-                return style.withColor(new Color(1f, 1, 0.6f).getRGB());
-            });
+            var tooltip = Component.empty().append(Component.translatable("tooltip.oreganized.speed", formattedSpeed))
+                    .withStyle((style) -> style.withColor(0xc7bf81));
+            var arrow = Component.empty().append("->")
+                    .withStyle((style) -> style.withColor(0xebe198));
 
-            if (this.lastToolHighlight.hasCustomHoverName()) {
-                tooltip.withStyle(ChatFormatting.ITALIC);
-            }
-
-            var highlightTip = this.lastToolHighlight.getHighlightTip(tooltip);
-            int i = this.getFont().width(highlightTip);
-            int j = (this.screenWidth - i) / 2;
-            int k = this.screenHeight - Math.max(yShift, 59) - 12;
-            if (!this.minecraft.gameMode.canHurtPlayer()) {
-                k += 14;
-            }
-
-            int l = (int) ((float) this.toolHighlightTimer * 256.0F / 10.0F);
-            if (l > 255) {
-                l = 255;
-            }
-
-            if (l > 0) {
-                graphics.fill(j - 2, k - 2, j + i + 2, k + 9 + 2, this.minecraft.options.getBackgroundColor(0));
-                Font font = IClientItemExtensions.of(this.lastToolHighlight).getFont(this.lastToolHighlight, IClientItemExtensions.FontContext.SELECTED_ITEM_NAME);
-                if (font == null) {
-                    graphics.drawString(this.getFont(), highlightTip, j, k, 16777215 + (l << 24));
-                    graphics.drawString(this.getFont(), this.lastToolHighlight.getHighlightTip(arrow), j - 20 + (int) (Math.cos(time / 10f) * 5), k, 16777215 + (l << 24));
-                } else {
-                    j = (this.screenWidth - font.width(highlightTip)) / 2;
-                    graphics.drawString(font, highlightTip, j, k, 16777215 + (l << 24));
-                }
-            }
+            var x = (screenWidth - font.width(tooltip)) / 2;
+            graphics.drawString(font, tooltip, x, y - 12, color);
+            graphics.drawString(font, arrow, x - 20 + (int) (Math.cos(time / 10f) * 5), y - 12, color);
         }
-    }
 
+        if (lastToolHighlight.is(OItems.UNKNOWN_DEVICE.get())) {
+            DeviceItem.getValue(lastToolHighlight).ifPresent(value -> {
+                var tooltip = Component.literal(String.format("%s", value))
+                        .withStyle(style -> style.withColor(DeviceItem.TOOLTIP_COLOR));
+                var x = (screenWidth - font.width(tooltip)) / 2;
+                graphics.drawString(font, tooltip, x, y - 12, color);
+            });
+        }
+
+        return original.call(graphics, font, text, centeredX, y, color);
+    }
 }

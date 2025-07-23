@@ -6,7 +6,9 @@ import galena.oreganized.client.render.entity.LeadBoltRender;
 import galena.oreganized.client.render.entity.ShrapnelBombMinecartRender;
 import galena.oreganized.client.render.entity.ShrapnelBombRender;
 import galena.oreganized.client.render.gui.StunningOverlay;
+import galena.oreganized.client.tooltips.ClientDeviceTooltip;
 import galena.oreganized.client.tooltips.ClientThermometerTooltip;
+import galena.oreganized.client.tooltips.DeviceTooltip;
 import galena.oreganized.client.tooltips.ThermometerTooltip;
 import galena.oreganized.content.item.DeviceItem;
 import galena.oreganized.content.item.ThermometerItem;
@@ -128,6 +130,7 @@ public class OreganizedClient {
     @SubscribeEvent
     public static void registerClientTooltips(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(ThermometerTooltip.class, ClientThermometerTooltip::new);
+        event.register(DeviceTooltip.class, ClientDeviceTooltip::new);
     }
 
     @Mod.EventBusSubscriber(modid = Oreganized.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)

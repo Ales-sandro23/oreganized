@@ -1,6 +1,6 @@
 package galena.oreganized.content.item;
 
-import galena.oreganized.client.accessors.GuiThermometerAccessor;
+import galena.oreganized.client.accessors.GuiAccessor;
 import galena.oreganized.index.OCriteriaTriggers;
 import galena.oreganized.index.OItems;
 import net.minecraft.client.Minecraft;
@@ -29,7 +29,7 @@ public class SpeedometerItem extends Item {
 
         player.getCooldowns().addCooldown(OItems.SPEEDOMETER.get(), 40);
         if (level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-            if (Minecraft.getInstance().gui instanceof GuiThermometerAccessor accessor) {
+            if (Minecraft.getInstance().gui instanceof GuiAccessor accessor) {
                 accessor.oreganized$setToolHighlightTimer(60);
             }
         }

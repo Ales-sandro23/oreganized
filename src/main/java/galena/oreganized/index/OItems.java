@@ -7,6 +7,7 @@ import com.teamabnormals.blueprint.core.util.registry.ItemSubRegistryHelper;
 import galena.oreganized.Oreganized;
 import galena.oreganized.compat.farmers_delight.FarmersDelightCompat;
 import galena.oreganized.content.item.BushHammerItem;
+import galena.oreganized.content.item.DeviceItem;
 import galena.oreganized.content.item.ElectrumArmorItem;
 import galena.oreganized.content.item.FlintAndPewterItem;
 import galena.oreganized.content.item.LeadBoltItem;
@@ -79,7 +80,7 @@ public class OItems {
     // Misc Tools
     public static final RegistryObject<Item> THERMOMETER = HELPER.createItem("thermometer", () -> new ThermometerItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> SPEEDOMETER = HELPER.createItem("speedometer", () -> new SpeedometerItem(new Item.Properties().stacksTo(1)));
-    public static final RegistryObject<Item> UNKNOWN_DEVICE = HELPER.createItem("unknown_device", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
+    public static final RegistryObject<Item> UNKNOWN_DEVICE = HELPER.createItem("unknown_device", () -> new DeviceItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
     public static final RegistryObject<Item> SILVER_MIRROR = HELPER.createItem("silver_mirror", () -> new SilverMirrorItem(new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> MOLTEN_LEAD_BUCKET = HELPER.createItem("molten_lead_bucket", () -> new BucketItem(OFluids.MOLTEN_LEAD, new Item.Properties().stacksTo(1).craftRemainder(Items.BUCKET)));
 

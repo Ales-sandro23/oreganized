@@ -1,16 +1,14 @@
 package galena.oreganized.data;
 
 import galena.oreganized.Oreganized;
+import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.data.provider.OLangProvider;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OCriteriaTriggers;
 import galena.oreganized.index.OEffects;
 import galena.oreganized.index.OItems;
 import galena.oreganized.index.OTags;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
-import javax.annotation.Nullable;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.advancements.FrameType;
@@ -31,6 +29,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class OAdvancements extends ForgeAdvancementProvider {
 
@@ -155,9 +158,22 @@ public class OAdvancements extends ForgeAdvancementProvider {
                     .addCriterion("in_lead_cloud", OCriteriaTriggers.IN_LEAD_CLOUD.instance())
                     .save(consumer, "oreganized:story/lead_to_dust");
 
-            Advancement.Builder.advancement()
+            Int2ObjectFunction<ItemStack> thermometer = heat -> {
+                var stack = new ItemStack(OItems.THERMOMETER.get());
+                ThermometerItem.setHeatLevel(stack, null, heat);
+                return stack;
+            };
+
+            var shakeItOff = Advancement.Builder.advancement()
                     .parent(getAdv("husbandry/root"))
-                    .display(info(OItems.THERMOMETER.get(), "thermal_shock", FrameType.TASK,
+                    .display(info(thermometer.get(1), "shake_it_off", FrameType.TASK,
+                            "Shake it off!", "Shake the Thermometer and recalibrate its value"))
+                    .addCriterion("shaken_thermometer", OCriteriaTriggers.SHAKEN_THERMOMETER.instance())
+                    .save(consumer, "oreganized:husbandry/shake_it_off");
+
+            Advancement.Builder.advancement()
+                    .parent(shakeItOff)
+                    .display(info(thermometer.apply(7), "thermal_shock", FrameType.TASK,
                             "Thermal Shock", "Cool your Thermometer too quickly in water, destroying it"))
                     .addCriterion("broken_thermometer", OCriteriaTriggers.BROKEN_THERMOMETER.instance())
                     .save(consumer, "oreganized:husbandry/thermal_shock");

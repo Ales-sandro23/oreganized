@@ -1,30 +1,30 @@
 {
-  "parent": "oreganized:husbandry/shake_it_off",
+  "parent": "minecraft:husbandry/root",
   "criteria": {
-    "broken_thermometer": {
+    "shaken_thermometer": {
       "conditions": {},
-      "trigger": "oreganized:broken_thermometer"
+      "trigger": "oreganized:shaken_thermometer"
     }
   },
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.oreganized.thermal_shock.description"
+      "translate": "advancements.oreganized.shake_it_off.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
       "item": "oreganized:thermometer",
-      "nbt": "{OreganizedHeat:7}"
+      "nbt": "{OreganizedHeat:1}"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.oreganized.thermal_shock.title"
+      "translate": "advancements.oreganized.shake_it_off.title"
     }
   },
   "requirements": [
     [
-      "broken_thermometer"
+      "shaken_thermometer"
     ]
   ],
   "sends_telemetry_event": true

@@ -28,6 +28,7 @@ val dye_depot_version: String by extra
 val jade_version: String by extra
 val jei_version: String by extra
 val galena_hats_version: String by extra
+val multikulti_version: String by extra
 
 val mod_version = System.getenv("RELEASE_VERSION") ?: extra["mod_version"] as String
 
@@ -145,6 +146,7 @@ repositories {
         url = uri("https://registry.somethingcatchy.net/repository/maven-releases/")
         content {
             includeGroup("dev.galena")
+            includeGroup("com.possible-triangle")
         }
     }
 }
@@ -171,6 +173,8 @@ dependencies {
             prefer(hatsVersion)
         }
     }))
+
+    implementation(fg.deobf("com.possible-triangle:multikulti-datagen-forge:$multikulti_version"))
 
     // Compatibilities
     implementation(fg.deobf("maven.modrinth:farmers-delight:${farmersdelight_version}"))

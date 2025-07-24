@@ -1,6 +1,8 @@
 package galena.oreganized.data;
 
 import com.google.common.collect.ImmutableList;
+import com.possible_triangle.multikulti.platform.conditions.Conditional;
+import com.possible_triangle.multikulti.platform.conditions.ModLoaded;
 import galena.oreganized.Oreganized;
 import galena.oreganized.compat.ColorCompat;
 import galena.oreganized.data.provider.ORecipeProvider;
@@ -18,6 +20,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
 import org.infernalstudios.shieldexp.init.ItemsInit;
 import umpaz.nethersdelight.common.registry.NDItems;
 import vectorwing.farmersdelight.common.registry.ModItems;
@@ -44,7 +47,10 @@ public class ORecipes extends ORecipeProvider {
 
         compact(OBlocks.SILVER_BLOCK.get().asItem(), OItems.SILVER_INGOT.get()).save(consumer);
         compact(OBlocks.LEAD_BLOCK.get().asItem(), OItems.LEAD_INGOT.get()).save(consumer);
-        compact(OBlocks.ELECTRUM_BLOCK.get().asItem(), OItems.ELECTRUM_INGOT.get()).save(consumer);
+        Conditional.with(
+                compact(OBlocks.ELECTRUM_BLOCK.get().asItem(), OItems.ELECTRUM_INGOT.get()),
+                new ModLoaded("oreganized")
+        ).save(consumer);
 
         compact(OBlocks.RAW_SILVER_BLOCK.get().asItem(), OItems.RAW_SILVER.get()).save(consumer);
         compact(OBlocks.RAW_LEAD_BLOCK.get().asItem(), OItems.RAW_LEAD.get()).save(consumer);

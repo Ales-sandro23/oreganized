@@ -1,8 +1,8 @@
 package galena.oreganized.data;
 
+import static galena.oreganized.data.ConditionalData.dyed;
+
 import com.google.common.collect.ImmutableList;
-import com.possible_triangle.multikulti.platform.conditions.Conditional;
-import com.possible_triangle.multikulti.platform.conditions.ModLoaded;
 import galena.oreganized.Oreganized;
 import galena.oreganized.compat.ColorCompat;
 import galena.oreganized.data.provider.ORecipeProvider;
@@ -20,7 +20,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.crafting.ConditionalRecipe;
 import org.infernalstudios.shieldexp.init.ItemsInit;
 import umpaz.nethersdelight.common.registry.NDItems;
 import vectorwing.farmersdelight.common.registry.ModItems;
@@ -47,10 +46,7 @@ public class ORecipes extends ORecipeProvider {
 
         compact(OBlocks.SILVER_BLOCK.get().asItem(), OItems.SILVER_INGOT.get()).save(consumer);
         compact(OBlocks.LEAD_BLOCK.get().asItem(), OItems.LEAD_INGOT.get()).save(consumer);
-        Conditional.with(
-                compact(OBlocks.ELECTRUM_BLOCK.get().asItem(), OItems.ELECTRUM_INGOT.get()),
-                new ModLoaded("oreganized")
-        ).save(consumer);
+        compact(OBlocks.ELECTRUM_BLOCK.get().asItem(), OItems.ELECTRUM_INGOT.get()).save(consumer);
 
         compact(OBlocks.RAW_SILVER_BLOCK.get().asItem(), OItems.RAW_SILVER.get()).save(consumer);
         compact(OBlocks.RAW_LEAD_BLOCK.get().asItem(), OItems.RAW_LEAD.get()).save(consumer);
@@ -97,9 +93,9 @@ public class ORecipes extends ORecipeProvider {
         stonecutting(OBlocks.POLISHED_GLANCE, OBlocks.GLANCE_BRICK_WALL.get()).save(consumer, Oreganized.modLoc("stonecutting/glance_brick_wall_from_polished"));
 
         makeWaxed(OBlocks.WAXED_SPOTTED_GLANCE, OBlocks.SPOTTED_GLANCE).save(consumer);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS,Items.PURPLE_DYE).requires(OBlocks.PURPLE_DATURA.get()).unlockedBy("has_datura_purple", has(OBlocks.PURPLE_DATURA.get()));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, Items.PURPLE_DYE).requires(OBlocks.PURPLE_DATURA.get()).unlockedBy("has_datura_purple", has(OBlocks.PURPLE_DATURA.get()));
 
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS,Items.WHITE_DYE).requires(OBlocks.WHITE_DATURA.get()).unlockedBy("has_datura_white", has(OBlocks.WHITE_DATURA.get()));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, Items.WHITE_DYE).requires(OBlocks.WHITE_DATURA.get()).unlockedBy("has_datura_white", has(OBlocks.WHITE_DATURA.get()));
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, OItems.THERMOMETER.get())
                 .pattern(" X ")
                 .pattern("XOX")
@@ -148,16 +144,16 @@ public class ORecipes extends ORecipeProvider {
 
         OBlocks.CRYSTAL_GLASS.forEach((color, crystalGlass) -> {
             var glass = ColorCompat.getColoredBlock("stained_glass", color);
-            crystalGlass(crystalGlass, glass).save(consumer);
+            dyed(color, crystalGlass(crystalGlass, glass)).save(consumer);
         });
 
         OBlocks.WAXED_CONCRETE_POWDER.forEach((color, waxed) -> {
             var unwaxed = ColorCompat.getColoredBlock("concrete_powder", color);
-            makeWaxed(waxed, unwaxed).save(consumer);
+            dyed(color, makeWaxed(waxed, unwaxed)).save(consumer);
         });
 
         OBlocks.CRYSTAL_GLASS_PANES.forEach((color, pane) ->
-                makeBars(pane, OBlocks.CRYSTAL_GLASS.get(color)).save(consumer)
+                dyed(color, makeBars(pane, OBlocks.CRYSTAL_GLASS.get(color))).save(consumer)
         );
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, OBlocks.GLANCE.get(), 2)

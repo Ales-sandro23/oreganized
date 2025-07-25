@@ -75,6 +75,7 @@ minecraft {
 
         create("data") {
             taskName = "Data"
+            workingDirectory("run/data")
 
             val existingMods = listOf(
                 "blueprint",
@@ -174,7 +175,8 @@ dependencies {
         }
     }))
 
-    implementation(fg.deobf("com.possible-triangle:multikulti-datagen-forge:$multikulti_version"))
+    implementation(fg.deobf("com.possible-triangle:multikulti-core-forge:$minecraft_version-$multikulti_version"))
+    implementation(fg.deobf("com.possible-triangle:multikulti-datagen-forge:$minecraft_version-$multikulti_version"))
 
     // Compatibilities
     implementation(fg.deobf("maven.modrinth:farmers-delight:${farmersdelight_version}"))

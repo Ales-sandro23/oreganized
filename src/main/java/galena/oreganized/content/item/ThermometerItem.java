@@ -7,6 +7,7 @@ import galena.oreganized.content.block.IMeltableBlock;
 import galena.oreganized.index.OCriteriaTriggers;
 import galena.oreganized.index.OItems;
 import galena.oreganized.index.OTags;
+import java.util.Optional;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -43,8 +44,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 @EventBusSubscriber(modid = Oreganized.MOD_ID)
 public class ThermometerItem extends Item {

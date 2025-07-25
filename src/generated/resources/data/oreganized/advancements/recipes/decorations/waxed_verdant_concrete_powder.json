@@ -1,5 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "dye_depot"
+    }
+  ],
   "criteria": {
     "has_honeycomb": {
       "conditions": {
@@ -32,6 +38,14 @@
       "trigger": "minecraft:inventory_changed"
     }
   },
+  "fabric:load_conditions": [
+    {
+      "type": "fabric:all_mods_loaded",
+      "values": [
+        "dye_depot"
+      ]
+    }
+  ],
   "requirements": [
     [
       "has_verdant_concrete_powder",

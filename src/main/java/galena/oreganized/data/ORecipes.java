@@ -3,22 +3,32 @@ package galena.oreganized.data;
 import static galena.oreganized.data.ConditionalData.dyed;
 
 import com.google.common.collect.ImmutableList;
+import com.simibubi.create.content.fluids.transfer.FillingRecipe;
+import com.simibubi.create.content.kinetics.crusher.CrushingRecipe;
+import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
+import com.simibubi.create.content.kinetics.mixer.CompactingRecipe;
+import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
+import com.simibubi.create.content.processing.recipe.HeatCondition;
 import galena.oreganized.Oreganized;
 import galena.oreganized.compat.ColorCompat;
 import galena.oreganized.data.provider.ORecipeProvider;
 import galena.oreganized.index.OBlocks;
+import galena.oreganized.index.OFluids;
 import galena.oreganized.index.OItems;
 import galena.oreganized.index.OTags;
+import java.util.List;
 import java.util.function.Consumer;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import org.infernalstudios.shieldexp.init.ItemsInit;
 import umpaz.nethersdelight.common.registry.NDItems;
@@ -134,9 +144,9 @@ public class ORecipes extends ORecipeProvider {
         smithingElectrum(() -> Items.DIAMOND_PICKAXE, OItems.ELECTRUM_PICKAXE).save(consumer, Oreganized.modLoc("electrum_pickaxe"));
         smithingElectrum(() -> Items.DIAMOND_AXE, OItems.ELECTRUM_AXE).save(consumer, Oreganized.modLoc("electrum_axe"));
         smithingElectrum(() -> Items.DIAMOND_HOE, OItems.ELECTRUM_HOE).save(consumer, Oreganized.modLoc("electrum_hoe"));
-        smithingElectrum(ModItems.DIAMOND_KNIFE, OItems.ELECTRUM_KNIFE).save(consumer, Oreganized.modLoc("electrum_knife"));
-        smithingElectrum(ItemsInit.DIAMOND_SHIELD, OItems.ELECTRUM_SHIELD).save(consumer, Oreganized.modLoc("electrum_shield"));
-        smithingElectrum(NDItems.DIAMOND_MACHETE, OItems.ELECTRUM_MACHETE).save(consumer, Oreganized.modLoc("electrum_machete"));
+        whenLoaded(smithingElectrum(ModItems.DIAMOND_KNIFE, OItems.ELECTRUM_KNIFE), "farmersdelight").save(consumer, Oreganized.modLoc("electrum_knife"));
+        whenLoaded(smithingElectrum(ItemsInit.DIAMOND_SHIELD, OItems.ELECTRUM_SHIELD), "shieldexp").save(consumer, Oreganized.modLoc("electrum_shield"));
+        whenLoaded(smithingElectrum(NDItems.DIAMOND_MACHETE, OItems.ELECTRUM_MACHETE), "nethersdelight").save(consumer, Oreganized.modLoc("electrum_machete"));
         smithingElectrum(() -> Items.DIAMOND_HELMET, OItems.ELECTRUM_HELMET).save(consumer, Oreganized.modLoc("electrum_helmet"));
         smithingElectrum(() -> Items.DIAMOND_CHESTPLATE, OItems.ELECTRUM_CHESTPLATE).save(consumer, Oreganized.modLoc("electrum_chestplate"));
         smithingElectrum(() -> Items.DIAMOND_LEGGINGS, OItems.ELECTRUM_LEGGINGS).save(consumer, Oreganized.modLoc("electrum_leggings"));
@@ -150,6 +160,13 @@ public class ORecipes extends ORecipeProvider {
         OBlocks.WAXED_CONCRETE_POWDER.forEach((color, waxed) -> {
             var unwaxed = ColorCompat.getColoredBlock("concrete_powder", color);
             dyed(color, makeWaxed(waxed, unwaxed)).save(consumer);
+
+            dyed(color, processing(DeployerApplicationRecipe::new, waxed.getId().getPath())
+                    .output(waxed.get())
+                    .require(Blocks.HONEYCOMB_BLOCK)
+                    .require(unwaxed)
+                    .toolNotConsumed()
+            ).build(consumer);
         });
 
         OBlocks.CRYSTAL_GLASS_PANES.forEach((color, pane) ->
@@ -297,5 +314,74 @@ public class ORecipes extends ORecipeProvider {
                 .unlockedBy("has_silver", has(OTags.Items.INGOTS_SILVER))
                 .unlockedBy("has_amethyst", has(Items.AMETHYST_SHARD))
                 .save(consumer);
+
+        unlessLoaded(
+                ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, OItems.ELECTRUM_INGOT.get())
+                        .requires(OTags.Items.INGOTS_SILVER)
+                        .requires(OTags.Items.INGOTS_SILVER)
+                        .requires(OTags.Items.INGOTS_SILVER)
+                        .requires(OTags.Items.INGOTS_SILVER)
+                        .requires(OTags.Items.INGOTS_SILVER)
+                        .requires(OTags.Items.INGOTS_GOLD)
+                        .requires(OTags.Items.INGOTS_GOLD)
+                        .requires(OTags.Items.INGOTS_GOLD)
+                        .unlockedBy("has_gold", has(OTags.Items.INGOTS_GOLD))
+                        .unlockedBy("has_silver", has(OTags.Items.INGOTS_SILVER)),
+                "create"
+        ).save(consumer);
+
+        processing(CompactingRecipe::new, "molten_lead")
+                .output(OBlocks.LEAD_BLOCK.get())
+                .require(OTags.Fluids.MOLTEN_LEAD, 1000)
+                .build(consumer);
+
+        processing(CrushingRecipe::new, "glance")
+                .output(0.8F, new ResourceLocation("create", "crushed_raw_lead"), 1)
+                .output(0.8F, OItems.LEAD_NUGGET.get())
+                .require(OBlocks.GLANCE.get())
+                .duration(250)
+                .build(consumer);
+
+        processing(CrushingRecipe::new, "glance_recycling")
+                .output(0.8F, new ResourceLocation("create", "crushed_raw_lead"), 1)
+                .output(0.8F, OItems.LEAD_NUGGET.get())
+                .require(OTags.Items.STONE_TYPES_GLANCE)
+                .duration(250)
+                .build(consumer);
+
+        processing(FillingRecipe::new, "spotted_glance")
+                .output(OBlocks.SPOTTED_GLANCE.get())
+                .require(OBlocks.GLANCE.get())
+                .require(OTags.Fluids.MOLTEN_LEAD, 250)
+                .build(consumer);
+
+        processing(MixingRecipe::new, "electrum_ingot")
+                .output(OItems.ELECTRUM_INGOT.get())
+                .require(OTags.Items.INGOTS_SILVER)
+                .require(OTags.Items.INGOTS_SILVER)
+                .require(OTags.Items.INGOTS_SILVER)
+                .require(OTags.Items.INGOTS_SILVER)
+                .require(OTags.Items.INGOTS_SILVER)
+                .require(OTags.Items.INGOTS_GOLD)
+                .require(OTags.Items.INGOTS_GOLD)
+                .require(OTags.Items.INGOTS_GOLD)
+                .requiresHeat(HeatCondition.HEATED)
+                .build(consumer);
+
+        processing(MixingRecipe::new, "glance")
+                .output(OBlocks.GLANCE.get())
+                .require(Items.DIORITE)
+                .require(OTags.Items.NUGGETS_LEAD)
+                .build(consumer);
+
+        processing(MixingRecipe::new, "molten_lead")
+                .output(OFluids.MOLTEN_LEAD.get(), 1000)
+                .require(Ingredient.merge(List.of(
+                        Ingredient.of(OTags.Items.STORAGE_BLOCKS_LEAD),
+                        Ingredient.of(OTags.Items.STORAGE_BLOCKS_RAW_LEAD)
+                )))
+                .requiresHeat(HeatCondition.HEATED)
+                .build(consumer);
     }
+
 }

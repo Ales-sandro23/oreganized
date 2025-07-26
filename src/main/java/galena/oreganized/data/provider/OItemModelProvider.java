@@ -4,13 +4,9 @@ import static galena.oreganized.ModCompat.SHIELD_EXPANSION_ID;
 
 import com.teamabnormals.blueprint.core.data.client.BlueprintItemModelProvider;
 import galena.oreganized.Oreganized;
-import galena.oreganized.content.item.DeviceItem;
 import java.util.function.Supplier;
-
-import galena.oreganized.content.item.ThermometerItem;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;

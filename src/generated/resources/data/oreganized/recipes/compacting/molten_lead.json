@@ -1,0 +1,20 @@
+{
+  "type": "create:compacting",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": 1000,
+      "fluidTag": "forge:molten_lead"
+    }
+  ],
+  "results": [
+    {
+      "item": "oreganized:lead_block"
+    }
+  ]
+}

@@ -1,5 +1,10 @@
 package galena.oreganized.data.provider;
 
+import com.possible_triangle.multikulti.datagen.conditions.Conditional;
+import com.possible_triangle.multikulti.datagen.conditions.Inverted;
+import com.possible_triangle.multikulti.datagen.conditions.ModLoaded;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import galena.oreganized.Oreganized;
 import galena.oreganized.index.OItems;
 import galena.oreganized.index.OTags;
@@ -169,6 +174,11 @@ public abstract class ORecipeProvider extends RecipeProvider {
                 .unlocks("has_" + ForgeRegistries.ITEMS.getKey(upgradeItem.get()), has(upgradeItem.get()));
     }
 
+    public SmithingTransformRecipeBuilder smithingRecipe(Supplier<? extends Item> input, TagKey<Item> upgradeItem, Supplier<? extends Item> templateItem, Supplier<? extends Item> result) {
+        return SmithingTransformRecipeBuilder.smithing(Ingredient.of(templateItem.get()), Ingredient.of(input.get()), Ingredient.of(upgradeItem), RecipeCategory.MISC, result.get())
+                .unlocks("has_" + upgradeItem.location().getPath(), has(upgradeItem));
+    }
+
     public SmithingTransformRecipeBuilder smithingElectrum(Supplier<? extends Item> input, Supplier<? extends Item> result) {
         return smithingRecipe(input, OItems.ELECTRUM_INGOT, OItems.ELECTRUM_UPGRADE_SMITHING_TEMPLATE, result);
     }
@@ -213,5 +223,20 @@ public abstract class ORecipeProvider extends RecipeProvider {
     public void makeChiseledStonecutting(Supplier<? extends Block> blockOut, Supplier<? extends Block> blockIn, Supplier<? extends SlabBlock> slabIn, Consumer<FinishedRecipe> consumer) {
         makeChiseled(blockOut, slabIn).save(consumer);
         stonecutting(blockIn, blockOut.get()).save(consumer, Oreganized.modLoc("stonecutting/" + ForgeRegistries.ITEMS.getKey(blockOut.get().asItem()).getPath()));
+    }
+
+    public <T extends ProcessingRecipe<?>> ProcessingRecipeBuilder<T> processing(ProcessingRecipeBuilder.ProcessingRecipeFactory<T> factory, String id) {
+        return whenLoaded(
+                new ProcessingRecipeBuilder<>(factory, Oreganized.modLoc(id)),
+                "create"
+        );
+    }
+
+    public <T> T unlessLoaded(T value, String... modIds) {
+        return Conditional.with(value, new Inverted(new ModLoaded(modIds, true)));
+    }
+
+    public <T> T whenLoaded(T value, String... modIds) {
+        return Conditional.with(value, new ModLoaded(modIds));
     }
 }

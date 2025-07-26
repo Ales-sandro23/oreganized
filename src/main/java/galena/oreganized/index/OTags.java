@@ -31,6 +31,7 @@ public class OTags {
         public static final TagKey<Item> RAW_MATERIALS_SILVER = forgeTag("raw_materials/silver");
         public static final TagKey<Item> RAW_MATERIALS_LEAD = forgeTag("raw_materials/lead");
 
+        public static final TagKey<Item> INGOTS_GOLD = forgeTag("ingots/gold");
         public static final TagKey<Item> INGOTS_SILVER = forgeTag("ingots/silver");
         public static final TagKey<Item> INGOTS_LEAD = forgeTag("ingots/lead");
         public static final TagKey<Item> INGOTS_ELECTRUM = forgeTag("ingots/electrum");

@@ -12,5 +12,11 @@
   ],
   "tool": {
     "item": "oreganized:scribe"
-  }
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "farmersdelight"
+    }
+  ]
 }

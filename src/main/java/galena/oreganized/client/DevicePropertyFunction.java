@@ -1,22 +1,24 @@
 package galena.oreganized.client;
 
+import galena.oreganized.content.item.DeviceItem;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class DevicePropertyFunction implements ClampedItemPropertyFunction {
+public class DevicePropertyFunction implements ItemPropertyFunction {
 
     private double current;
     private double motion;
     private long lastUpdateTick;
 
     @Override
-    public float unclampedCall(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int i) {
+    public float call(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int i) {
         if (level == null) return 0;
-        return wobble(level, Math.random());
+        return Mth.clamp(wobble(level, Math.random()), 0F, 1F) * DeviceItem.FRAMES;
     }
 
     private float wobble(Level level, double target) {

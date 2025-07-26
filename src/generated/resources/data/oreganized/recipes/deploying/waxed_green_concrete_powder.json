@@ -1,0 +1,23 @@
+{
+  "type": "create:deploying",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:honeycomb_block"
+    },
+    {
+      "item": "minecraft:green_concrete_powder"
+    }
+  ],
+  "keepHeldItem": true,
+  "results": [
+    {
+      "item": "oreganized:waxed_green_concrete_powder"
+    }
+  ]
+}

@@ -122,9 +122,9 @@ public class OLootTables extends LootTableProvider {
                                     LootItem.lootTableItem(OBlocks.LEAD_BARS.get())
                             )))));
 
-            OBlocks.CRYSTAL_GLASS.forEach((c, b) -> dropAsSilk(b));
-            OBlocks.CRYSTAL_GLASS_PANES.forEach((c, b) -> dropAsSilk(b));
-            OBlocks.WAXED_CONCRETE_POWDER.forEach((c, b) -> dropSelf(b));
+            OBlocks.CRYSTAL_GLASS.forEach((c, b) -> dyed(c, () -> dropAsSilk(b)));
+            OBlocks.CRYSTAL_GLASS_PANES.forEach((c, b) -> dyed(c, () -> dropAsSilk(b)));
+            OBlocks.WAXED_CONCRETE_POWDER.forEach((c, b) -> dyed(c, () -> dropSelf(b)));
         }
 
         private void pottedPlant(Supplier<? extends FlowerPotBlock> block) {

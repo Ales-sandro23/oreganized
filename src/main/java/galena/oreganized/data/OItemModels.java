@@ -2,6 +2,9 @@ package galena.oreganized.data;
 
 import galena.oreganized.Oreganized;
 import galena.oreganized.compat.ColorCompat;
+import galena.oreganized.content.item.DeviceItem;
+import galena.oreganized.content.item.SpeedometerItem;
+import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.data.provider.OItemModelProvider;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OItems;
@@ -104,7 +107,9 @@ public class OItemModels extends OItemModelProvider {
             withExistingParent(blockName(waxed), unwaxed.withPrefix("block/"));
         });
 
-        unknownDevice(OItems.UNKNOWN_DEVICE);
+        leveledDevice(OItems.UNKNOWN_DEVICE, DeviceItem.FRAMES, DeviceItem.PROPERTY_KEY);
+        leveledDevice(OItems.THERMOMETER, ThermometerItem.HEAT_LEVELS, ThermometerItem.PROPERTY_KEY);
+        leveledDevice(OItems.SPEEDOMETER, 16, SpeedometerItem.PROPERTY_KEY);
     }
 
 }

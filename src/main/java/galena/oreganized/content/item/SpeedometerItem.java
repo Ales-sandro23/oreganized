@@ -4,6 +4,7 @@ import galena.oreganized.client.accessors.GuiAccessor;
 import galena.oreganized.index.OCriteriaTriggers;
 import galena.oreganized.index.OItems;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -13,6 +14,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public class SpeedometerItem extends Item {
+    public static final ResourceLocation PROPERTY_KEY = new ResourceLocation("level");
+
     public SpeedometerItem(Properties pProperties) {
         super(pProperties);
     }

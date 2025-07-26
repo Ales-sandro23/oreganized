@@ -28,6 +28,7 @@ val dye_depot_version: String by extra
 val jade_version: String by extra
 val jei_version: String by extra
 val galena_hats_version: String by extra
+val multikulti_version: String by extra
 
 val mod_version = System.getenv("RELEASE_VERSION") ?: extra["mod_version"] as String
 
@@ -74,6 +75,7 @@ minecraft {
 
         create("data") {
             taskName = "Data"
+            workingDirectory("run/data")
 
             val existingMods = listOf(
                 "blueprint",
@@ -96,7 +98,6 @@ minecraft {
         }
 
         forEach {
-            it.workingDirectory(project.file("run"))
             it.args("-mixin.config=${mod_id}.mixins.json")
             it.mods {
                 create(mod_id) {
@@ -145,6 +146,7 @@ repositories {
         url = uri("https://registry.somethingcatchy.net/repository/maven-releases/")
         content {
             includeGroup("dev.galena")
+            includeGroup("com.possible-triangle")
         }
     }
 }
@@ -171,6 +173,9 @@ dependencies {
             prefer(hatsVersion)
         }
     }))
+
+    implementation(fg.deobf("com.possible-triangle:multikulti-core-forge:$minecraft_version-$multikulti_version"))
+    implementation(fg.deobf("com.possible-triangle:multikulti-datagen-forge:$minecraft_version-$multikulti_version"))
 
     // Compatibilities
     implementation(fg.deobf("maven.modrinth:farmers-delight:${farmersdelight_version}"))

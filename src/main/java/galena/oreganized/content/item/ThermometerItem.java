@@ -49,8 +49,9 @@ import org.jetbrains.annotations.Nullable;
 public class ThermometerItem extends Item {
 
     public static final ResourceLocation BREAK_LOOT_TABLE = Oreganized.modLoc("gameplay/thermometer_breaking");
+    public static final ResourceLocation PROPERTY_KEY = new ResourceLocation("level");
     private static final int AMBIENT_RANGE = 5;
-    public static final int HEAT_LEVELS = 8;
+    public static final int HEAT_LEVELS = 9;
 
     public ThermometerItem(Properties properties) {
         super(properties);
@@ -63,30 +64,30 @@ public class ThermometerItem extends Item {
     }
 
     private static int heatLevel(BlockState state, LevelAccessor level, BlockPos pos) {
-        if (state.is(OTags.Blocks.LAVA_HEAT_LEVEL)) return 7;
-        if (state.is(OTags.Blocks.FIRE_HEAT_LEVEL)) return 6;
-        if (state.getLightEmission(level, pos) > 2) return 3;
+        if (state.is(OTags.Blocks.LAVA_HEAT_LEVEL)) return 8;
+        if (state.is(OTags.Blocks.FIRE_HEAT_LEVEL)) return 7;
+        if (state.getLightEmission(level, pos) > 2) return 4;
         if (state.getBlock() instanceof IMeltableBlock block) {
             var goopyness = block.getGoopyness(state);
-            if (goopyness > 1) return 6;
-            if (goopyness > 0) return 4;
+            if (goopyness > 1) return 7;
+            if (goopyness > 0) return 5;
         }
-        return 1;
+        return 2;
     }
 
     public static int ambientMeasurement(Player player) {
         var level = player.level();
         var pos = player.blockPosition();
 
-        if (player.getFeetBlockState().is(OTags.Blocks.LAVA_HEAT_LEVEL)) return 7;
-        if (player.getFeetBlockState().is(OTags.Blocks.FIRE_HEAT_LEVEL)) return 6;
-        if (player.isOnFire()) return 4;
+        if (player.getFeetBlockState().is(OTags.Blocks.LAVA_HEAT_LEVEL)) return 8;
+        if (player.getFeetBlockState().is(OTags.Blocks.FIRE_HEAT_LEVEL)) return 7;
+        if (player.isOnFire()) return 5;
         if (player.isFreezing()) return 0;
 
         var biome = level.getBiome(pos).value();
         var temperature = biome.getBaseTemperature();
 
-        return (int) (Math.max(0, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 4));
+        return (int) (Math.max(1, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 4));
     }
 
     public static int activeMeasurement(Level level, BlockPos pos) {
@@ -100,8 +101,8 @@ public class ThermometerItem extends Item {
         var state = level.getBlockState(pos);
         var blockHeatLevel = heatLevel(state, level, pos);
 
-        if (lavaDistance < 8) {
-            var lavaHeatLevel = 7 - lavaDistance;
+        if (lavaDistance < HEAT_LEVELS) {
+            var lavaHeatLevel = (HEAT_LEVELS - 1) - lavaDistance;
             if (lavaHeatLevel > blockHeatLevel) return lavaHeatLevel;
         }
 
@@ -109,11 +110,11 @@ public class ThermometerItem extends Item {
     }
 
     private static int heatLevel(LivingEntity entity) {
-        if (entity.getType() == EntityType.MAGMA_CUBE) return 7;
-        if (entity.getType() == EntityType.BLAZE) return 6;
-        if (entity.isOnFire()) return 4;
+        if (entity.getType() == EntityType.MAGMA_CUBE) return 8;
+        if (entity.getType() == EntityType.BLAZE) return 7;
+        if (entity.isOnFire()) return 5;
 
-        if (entity.isInvertedHealAndHarm()) return 0;
+        if (entity.isInvertedHealAndHarm()) return 1;
 
         if (entity.getActiveEffects().stream().anyMatch(it -> !it.getEffect().isBeneficial())) return 3;
 

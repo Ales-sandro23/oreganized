@@ -10,55 +10,55 @@
     {
       "model": "oreganized:item/unknown_device_1",
       "predicate": {
-        "oreganized:device_value": 0.1
+        "oreganized:device_value": 1.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_2",
       "predicate": {
-        "oreganized:device_value": 0.2
+        "oreganized:device_value": 2.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_3",
       "predicate": {
-        "oreganized:device_value": 0.3
+        "oreganized:device_value": 3.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_4",
       "predicate": {
-        "oreganized:device_value": 0.4
+        "oreganized:device_value": 4.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_5",
       "predicate": {
-        "oreganized:device_value": 0.5
+        "oreganized:device_value": 5.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_6",
       "predicate": {
-        "oreganized:device_value": 0.6
+        "oreganized:device_value": 6.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_7",
       "predicate": {
-        "oreganized:device_value": 0.7
+        "oreganized:device_value": 7.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_8",
       "predicate": {
-        "oreganized:device_value": 0.8
+        "oreganized:device_value": 8.0
       }
     },
     {
       "model": "oreganized:item/unknown_device_9",
       "predicate": {
-        "oreganized:device_value": 0.9
+        "oreganized:device_value": 9.0
       }
     }
   ]

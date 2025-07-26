@@ -11,6 +11,7 @@ import galena.oreganized.client.tooltips.ClientThermometerTooltip;
 import galena.oreganized.client.tooltips.DeviceTooltip;
 import galena.oreganized.client.tooltips.ThermometerTooltip;
 import galena.oreganized.content.item.DeviceItem;
+import galena.oreganized.content.item.SpeedometerItem;
 import galena.oreganized.content.item.ThermometerItem;
 import galena.oreganized.index.OBlocks;
 import galena.oreganized.index.OEntityTypes;
@@ -69,14 +70,14 @@ public class OreganizedClient {
             }
         });
 
-        ItemProperties.register(OItems.SPEEDOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
+        ItemProperties.register(OItems.SPEEDOMETER.get(), SpeedometerItem.PROPERTY_KEY, (stack, world, entity, seed) -> {
             if (entity == null) return 0;
             var vehicle = entity.getRootVehicle();
             if (!(vehicle instanceof IMotionHolder motionHolder)) return 0;
             return Mth.clamp(Math.round(motionHolder.oreganised$getMotion() * 100), 0, 16);
         });
 
-        ItemProperties.register(OItems.THERMOMETER.get(), new ResourceLocation("level"), (stack, world, entity, seed) -> {
+        ItemProperties.register(OItems.THERMOMETER.get(), ThermometerItem.PROPERTY_KEY, (stack, world, entity, seed) -> {
             return ThermometerItem.getHeatLevel(stack);
         });
 

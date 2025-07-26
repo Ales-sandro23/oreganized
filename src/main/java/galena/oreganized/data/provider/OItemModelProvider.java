@@ -6,8 +6,11 @@ import com.teamabnormals.blueprint.core.data.client.BlueprintItemModelProvider;
 import galena.oreganized.Oreganized;
 import galena.oreganized.content.item.DeviceItem;
 import java.util.function.Supplier;
+
+import galena.oreganized.content.item.ThermometerItem;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
@@ -98,18 +101,19 @@ public abstract class OItemModelProvider extends BlueprintItemModelProvider {
         return wallInventory(ForgeRegistries.BLOCKS.getKey(wall.get()).getPath(), blockTexture(fullBlock));
     }
 
-    public ItemModelBuilder unknownDevice(RegistryObject<Item> item) {
+    public ItemModelBuilder leveledDevice(RegistryObject<? extends Item> item, int levels, ResourceLocation property) {
         var model = withExistingParent(name(item.get()), "item/generated");
 
-        for(int i = 0; i < DeviceItem.FRAMES; i++) {
+        for(int i = 0; i < levels; i++) {
             var subName = key(item.get()).withSuffix("_" + i);
             var subModel = generated(subName.getPath(), subName.withPrefix("item/"));
             model.override()
                     .model(subModel)
-                    .predicate(DeviceItem.PROPERTY_KEY, ((float) i) / DeviceItem.FRAMES)
+                    .predicate(property, i)
                     .end();
         }
 
         return model;
     }
+
 }

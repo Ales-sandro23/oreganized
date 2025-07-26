@@ -63,14 +63,15 @@ public class OLang extends OLangProvider {
         addSubtitle("entity", "bolt_hit", "Bolt hits");
         addSubtitle("block", "gargoyle.growl", "Gargoyle growls");
         add("tooltip.oreganized.speed", "Speed: %s");
-        add(ClientThermometerTooltip.getDescriptionId(0), "Cold");
-        add(ClientThermometerTooltip.getDescriptionId(1), "Fine");
-        add(ClientThermometerTooltip.getDescriptionId(2), "Warm");
-        add(ClientThermometerTooltip.getDescriptionId(3), "Hot");
-        add(ClientThermometerTooltip.getDescriptionId(4), "Sweltering");
-        add(ClientThermometerTooltip.getDescriptionId(5), "Searing");
-        add(ClientThermometerTooltip.getDescriptionId(6), "Scalding");
-        add(ClientThermometerTooltip.getDescriptionId(7), "Scorching");
+        add(ClientThermometerTooltip.getDescriptionId(0), "Freezing");
+        add(ClientThermometerTooltip.getDescriptionId(1), "Cold");
+        add(ClientThermometerTooltip.getDescriptionId(2), "Fine");
+        add(ClientThermometerTooltip.getDescriptionId(3), "Warm");
+        add(ClientThermometerTooltip.getDescriptionId(4), "Hot");
+        add(ClientThermometerTooltip.getDescriptionId(5), "Sweltering");
+        add(ClientThermometerTooltip.getDescriptionId(6), "Searing");
+        add(ClientThermometerTooltip.getDescriptionId(7), "Scalding");
+        add(ClientThermometerTooltip.getDescriptionId(8), "Scorching");
         add("tooltip.oreganized.wip.title", "Work In Progress");
         add("tooltip.oreganized.wip.description", "Usages for this item will be available in a future release");
 

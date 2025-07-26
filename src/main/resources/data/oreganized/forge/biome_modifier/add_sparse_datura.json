@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#oreganized:has_feature/sparse_datura",
+  "features": [
+    "oreganized:sparse_datura",
+    "oreganized:sparse_purple_datura"
+  ],
+  "step": "vegetal_decoration"
+}

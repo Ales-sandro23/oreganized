@@ -1,7 +1,7 @@
 name: Release
 on:
   release:
-    types: [created]
+    types: [ published ]
 
 env:
   CI: true
@@ -26,10 +26,32 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build and upload
+      - name: Build
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: build curseforge modrinth publish
+          arguments: build
+        env:
+          NEXUS_USER: ${{ secrets.NEXUS_USER }}
+          NEXUS_TOKEN: ${{ secrets.NEXUS_TOKEN }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          CHANGELOG: ${{ github.event.release.body }}
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        if: ${{ github.event.release.draft == true  }}
+        with:
+          name: build
+          path: build/libs/*.jar
+          if-no-files-found: error
+          retention-days: 5
+
+      - name: Publish
+        uses: gradle/gradle-build-action@v2
+        if: ${{ github.event.release.draft == false  }}
+        with:
+          arguments: curseforge modrinth publish
         env:
           NEXUS_USER: ${{ secrets.NEXUS_USER }}
           NEXUS_TOKEN: ${{ secrets.NEXUS_TOKEN }}

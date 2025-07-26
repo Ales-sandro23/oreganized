@@ -139,6 +139,7 @@ public class OTags {
         public static final TagKey<Biome> HAS_BOULDER = tag("has_structure/boulder");
         public static final TagKey<Biome> RICH_IN_LEAD_ORE = tag("rich_in_lead_ore");
         public static final TagKey<Biome> HAS_DATURA = tag("has_feature/datura");
+        public static final TagKey<Biome> HAS_SPARSE_DATURA = tag("has_feature/sparse_datura");
 
         private static TagKey<Biome> tag(String name) {
             return BiomeTags.create(Oreganized.modLoc(name).toString());

@@ -86,8 +86,9 @@ public class ThermometerItem extends Item {
 
         var biome = level.getBiome(pos).value();
         var temperature = biome.getBaseTemperature();
+        var weather = level.isRaining() ? 0 : 1;
 
-        return (int) (Math.max(1, Math.min(2, temperature) / 2) * (HEAT_LEVELS - 4));
+        return (int) (Math.max(0, Math.min(2, temperature) / 2) * 3) + weather;
     }
 
     public static int activeMeasurement(Level level, BlockPos pos) {

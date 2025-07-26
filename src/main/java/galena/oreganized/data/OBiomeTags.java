@@ -30,8 +30,7 @@ public class OBiomeTags extends BiomeTagsProvider {
                 .addTag(OTags.Biomes.RICH_IN_LEAD_ORE)
                 .addTag(Tags.Biomes.IS_PLAINS);
         tag(OTags.Biomes.RICH_IN_LEAD_ORE).addTag(BiomeTags.IS_SAVANNA);
-        tag(OTags.Biomes.HAS_DATURA)
-                .add(Biomes.PLAINS)
-                .addTags(BiomeTags.IS_SAVANNA);
+        tag(OTags.Biomes.HAS_DATURA).addTags(BiomeTags.IS_SAVANNA);
+        tag(OTags.Biomes.HAS_SPARSE_DATURA).add(Biomes.PLAINS);
     }
 }

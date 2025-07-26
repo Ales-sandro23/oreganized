@@ -55,6 +55,8 @@ public class OFeatures {
         public static final ResourceKey<ConfiguredFeature<?, ?>> LEAD_ORE_EXTRA = create("lead_ore_extra");
         public static final ResourceKey<ConfiguredFeature<?, ?>> DATURA = create("datura");
         public static final ResourceKey<ConfiguredFeature<?, ?>> PURPLE_DATURA = create("purple_datura");
+        public static final ResourceKey<ConfiguredFeature<?, ?>> SPARSE_DATURA = create("sparse_datura");
+        public static final ResourceKey<ConfiguredFeature<?, ?>> SPARSE_PURPLE_DATURA = create("sparse_purple_datura");
 
         public static ResourceKey<ConfiguredFeature<?, ?>> create(String name) {
             return ResourceKey.create(Registries.CONFIGURED_FEATURE, Oreganized.modLoc(name));
@@ -65,12 +67,14 @@ public class OFeatures {
             context.register(SILVER_ORE_EXTRA, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ImmutableList.of(OreConfiguration.target(new TagMatchTest(STONE_ORE_REPLACEABLES), OBlocks.SILVER_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(DEEPSLATE_ORE_REPLACEABLES), OBlocks.DEEPSLATE_SILVER_ORE.get().defaultBlockState())), 2, 1F)));
             context.register(LEAD_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ImmutableList.of(OreConfiguration.target(new TagMatchTest(STONE_ORE_REPLACEABLES), OBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(DEEPSLATE_ORE_REPLACEABLES), OBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState())), 8)));
             context.register(LEAD_ORE_EXTRA, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(ImmutableList.of(OreConfiguration.target(new TagMatchTest(STONE_ORE_REPLACEABLES), OBlocks.LEAD_ORE.get().defaultBlockState()), OreConfiguration.target(new TagMatchTest(DEEPSLATE_ORE_REPLACEABLES), OBlocks.DEEPSLATE_LEAD_ORE.get().defaultBlockState())), 8)));
-            context.register(DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.WHITE_DATURA.get()))))));
-            context.register(PURPLE_DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.PURPLE_DATURA.get()))))));
+            context.register(DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(false, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.WHITE_DATURA.get()))))));
+            context.register(PURPLE_DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(false, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.PURPLE_DATURA.get()))))));
+            context.register(SPARSE_DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(true, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.WHITE_DATURA.get()))))));
+            context.register(SPARSE_PURPLE_DATURA, new ConfiguredFeature<>(Feature.RANDOM_PATCH, daturaPatch(true, PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK, new SimpleBlockConfiguration(BlockStateProvider.simple(OBlocks.PURPLE_DATURA.get()))))));
         }
 
-        private static RandomPatchConfiguration daturaPatch(Holder<PlacedFeature> feature) {
-            return new RandomPatchConfiguration(96, 4, 3, feature);
+        private static RandomPatchConfiguration daturaPatch(boolean sparse, Holder<PlacedFeature> feature) {
+            return new RandomPatchConfiguration(64, sparse ? 2 : 4, 3, feature);
         }
     }
 
@@ -81,8 +85,9 @@ public class OFeatures {
         public static final ResourceKey<PlacedFeature> LEAD_ORE = create("lead_ore");
         public static final ResourceKey<PlacedFeature> LEAD_ORE_EXTRA = create("lead_ore_extra");
         public static final ResourceKey<PlacedFeature> DATURA = create("datura");
-
         public static final ResourceKey<PlacedFeature> PURPLE_DATURA = create("purple_datura");
+        public static final ResourceKey<PlacedFeature> SPARSE_DATURA = create("sparse_datura");
+        public static final ResourceKey<PlacedFeature> SPARSE_PURPLE_DATURA = create("sparse_purple_datura");
 
         public static ResourceKey<PlacedFeature> create(String name) {
             return ResourceKey.create(Registries.PLACED_FEATURE, Oreganized.modLoc(name));
@@ -97,7 +102,8 @@ public class OFeatures {
             context.register(LEAD_ORE_EXTRA, new PlacedFeature(features.getOrThrow(Configured.LEAD_ORE), OrePlacements.commonOrePlacement(10, HeightRangePlacement.uniform(VerticalAnchor.absolute(50), VerticalAnchor.absolute(80)))));
             context.register(DATURA, new PlacedFeature(features.getOrThrow(Configured.DATURA), rareOrePlacement(10, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES))));
             context.register(PURPLE_DATURA, new PlacedFeature(features.getOrThrow(Configured.PURPLE_DATURA), rareOrePlacement(25, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES))));
-
+            context.register(SPARSE_DATURA, new PlacedFeature(features.getOrThrow(Configured.SPARSE_DATURA), rareOrePlacement(30, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES))));
+            context.register(SPARSE_PURPLE_DATURA, new PlacedFeature(features.getOrThrow(Configured.SPARSE_PURPLE_DATURA), rareOrePlacement(75, HeightmapPlacement.onHeightmap(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES))));
         }
 
         private static List<PlacementModifier> rareOrePlacement(int pChance, PlacementModifier pHeightRange) {

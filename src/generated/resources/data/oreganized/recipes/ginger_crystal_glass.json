@@ -7,14 +7,6 @@
       "modid": "dye_depot"
     }
   ],
-  "fabric:load_conditions": [
-    {
-      "type": "fabric:all_mods_loaded",
-      "values": [
-        "dye_depot"
-      ]
-    }
-  ],
   "key": {
     "A": {
       "item": "dye_depot:ginger_stained_glass"

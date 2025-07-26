@@ -38,14 +38,6 @@
       "trigger": "minecraft:recipe_unlocked"
     }
   },
-  "fabric:load_conditions": [
-    {
-      "type": "fabric:all_mods_loaded",
-      "values": [
-        "dye_depot"
-      ]
-    }
-  ],
   "requirements": [
     [
       "has_navy_concrete_powder",

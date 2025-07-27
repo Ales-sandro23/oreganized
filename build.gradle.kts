@@ -345,6 +345,6 @@ tasks.register<TaskPublishCurseForge>("curseforge") {
         releaseType = release_type
         displayName = "$mod_name $mod_version"
         addGameVersion(minecraft_version)
-        addRelation("382216", Constants.RELATION_REQUIRED)
+        // addRelation("blueprint", Constants.RELATION_REQUIRED)
     }
 }

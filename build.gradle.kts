@@ -174,8 +174,15 @@ dependencies {
         }
     }))
 
-    implementation(fg.deobf("com.possible-triangle:multikulti-core-forge:$minecraft_version-$multikulti_version"))
-    implementation(fg.deobf("com.possible-triangle:multikulti-datagen-forge:$minecraft_version-$multikulti_version"))
+    val multikultiVersion = "$minecraft_version-$multikulti_version"
+    implementation(fg.deobf("com.possible-triangle:multikulti-core-forge:$multikultiVersion"))
+    implementation(fg.deobf("com.possible-triangle:multikulti-datagen-forge:$multikultiVersion"))
+    implementation(fg.deobf(jarJar("com.possible-triangle:multikulti-datagen-forge-fix:$multikultiVersion") {
+        version {
+            strictly("[${multikultiVersion},)")
+            prefer(multikultiVersion)
+        }
+    }))
 
     // Compatibilities
     implementation(fg.deobf("maven.modrinth:farmers-delight:${farmersdelight_version}"))
